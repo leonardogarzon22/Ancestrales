@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Animación Cocoboook - Saludo Completo</title>
+    <style>
+        :root {
+            --anim-duration: 3s; /* Duración total del ciclo */
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            width: 300px;
+            height: 110px;
+            background-color: white;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .img-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Recorte para que solo la 'b' cambie y el resto del texto sea estático */
+            clip-path: inset(0px 105px 0px 115px); 
+            -webkit-clip-path: inset(0px 105px 0px 115px);
+        }
+
+        /* El logo base NO tiene clip-path porque es el fondo completo */
+        .logo-base {
+            z-index: 1;
+            clip-path: none;
+            -webkit-clip-path: none;
+        }
+
+        /* --- LÓGICA DE ANIMACIÓN POR CAPAS --- */
+
+        /* 1. Centro: Visible al inicio, entre movimientos y al final */
+        .pose-centro {
+            z-index: 10;
+            animation: cycleCentro var(--anim-duration) infinite;
+        }
+
+        /* 2. Izquierda: Solo aparece en el primer tramo */
+        .pose-izquierda {
+            z-index: 11;
+            animation: cycleIzquierda var(--anim-duration) infinite;
+        }
+
+        /* 3. Derecha: Solo aparece en el segundo tramo */
+        .pose-derecha {
+            z-index: 12;
+            animation: cycleDerecha var(--anim-duration) infinite;
+        }
+
+        /* --- KEYFRAMES (Control de Opacidad 0 a 1) --- */
+
+        @keyframes cycleCentro {
+            0%, 15%  { opacity: 1; } /* Pausa inicial */
+            20%, 45% { opacity: 0; } /* Desaparece para dejar ver Izquierda */
+            50%, 60% { opacity: 1; } /* Vuelve al centro brevemente */
+            65%, 85% { opacity: 0; } /* Desaparece para dejar ver Derecha */
+            90%, 100% { opacity: 1; } /* Pausa final */
+        }
+
+        @keyframes cycleIzquierda {
+            0%, 15%  { opacity: 0; }
+            20%, 45% { opacity: 1; } /* Se muestra */
+            50%, 100% { opacity: 0; }
+        }
+
+        @keyframes cycleDerecha {
+            0%, 60%  { opacity: 0; }
+            65%, 85% { opacity: 1; } /* Se muestra */
+            90%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo-wrapper">
+    <img src="logo_base.jpeg" class="img-layer logo-base">
+    
+    <img src="pose_centro.jpeg" class="img-layer pose-centro">
+    <img src="pose_izquierda.png" class="img-layer pose-izquierda">
+    <img src="pose_derecha.png" class="img-layer pose-derecha">
+</div>
+
+</body>
+</html>

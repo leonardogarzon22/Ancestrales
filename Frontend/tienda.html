@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Selección | Chocolates Ancestrales</title>
@@ -19,7 +19,8 @@
             --white: #ffffff;
             --obsidian: #0f0d0c;
             --anim-speed: 0.8s;
-            --transition-smooth: all var(--anim-speed) cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-premium: all var(--anim-speed) cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-smooth: all 0.5s ease;
         }
 
         * {
@@ -53,56 +54,73 @@
 
         /* --- NAVEGACIÓN DE ALTA GAMA --- */
         nav {
-            padding: 30px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(249, 247, 242, 0.98);
-            backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(78, 52, 46, 0.05);
-            transition: 0.5s;
+            background: var(--bone);
+            transition: var(--transition-smooth);
+            padding: 30px 6% 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        nav.scrolled {
+            padding: 10px 6%;
+            background: rgba(244, 241, 234, 0.98);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
         }
 
         .nav-logo {
-            width: 110px;
-            filter: grayscale(0.2);
-            transition: 0.5s;
-            cursor: pointer;
+            width: 320px;
+            /* Igual al index para evitar saltos */
+            height: auto;
+            transition: var(--transition-smooth);
+            display: block;
         }
 
-        .nav-logo:hover {
-            filter: grayscale(0);
-            transform: scale(1.05);
+        nav.scrolled .nav-logo {
+            width: 180px;
+        }
+
+        nav.scrolled .logo-container {
+            margin-bottom: 5px;
+        }
+
+        .nav-menu-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         nav ul {
             display: flex;
             list-style: none;
             gap: 45px;
-            align-items: center;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--cocoa);
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            font-weight: 500;
+            color: var(--obsidian);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            transition: 0.4s;
-            opacity: 0.6;
+            font-weight: 400;
+            transition: 0.3s;
         }
 
-        nav a:hover,
-        nav a.active-link {
-            opacity: 1;
-            color: var(--gold);
+        nav a:hover {
+            color: var(--gold-leaf);
         }
 
-        /* Icono Carrito Superior */
         .cart-trigger {
             position: relative;
             cursor: pointer;
@@ -161,14 +179,14 @@
             margin: 45px auto;
         }
 
-        /* --- GRID DE PRODUCTOS (BOUTIQUE) --- */
         .shop-grid {
-            max-width: 1450px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 8% 180px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 120px 80px;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 80px;
         }
 
         .product-card {
@@ -177,6 +195,23 @@
             position: relative;
         }
 
+        .product-card.featured {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .product-card.featured .image-container {
+            aspect-ratio: 5/4;
+        }
+
+        .product-card:not(.featured) {
+            margin-top: 0 !important;
+        }
+
+        /* AJUSTE: Marco con estética precolombina/artesanal */
         .image-container {
             width: 100%;
             aspect-ratio: 4/5;
@@ -185,6 +220,22 @@
             margin-bottom: 40px;
             position: relative;
             cursor: crosshair;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 15px;
+            /* Crea el efecto de marco */
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid var(--gold);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 2;
         }
 
         .image-container img {
@@ -198,7 +249,6 @@
             transform: scale(1.08);
         }
 
-        /* Badge de Exclusividad */
         .exclusive-badge {
             position: absolute;
             top: 30px;
@@ -406,7 +456,6 @@
             font-weight: 500;
         }
 
-        /* Estilo para los controles de cantidad */
         .quantity-controls {
             display: flex;
             align-items: center;
@@ -431,7 +480,6 @@
             color: var(--gold);
         }
 
-        /* NUEVO: Input de escritura manual */
         .qty-input {
             width: 35px;
             border: none;
@@ -442,10 +490,8 @@
             font-size: 0.9rem;
             font-weight: 600;
             -moz-appearance: textfield;
-            /* Quita flechas en Firefox */
         }
 
-        /* Quita flechas en Chrome/Safari */
         .qty-input::-webkit-outer-spin-button,
         .qty-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -487,6 +533,46 @@
             opacity: 0.5;
         }
 
+        /* SOMMELIER FLOATING BUTTON */
+        .floating-sommelier {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--cocoa);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            transition: var(--transition-premium);
+            overflow: hidden;
+        }
+
+        .floating-sommelier:hover {
+            width: 160px;
+            border-radius: 30px;
+            background: var(--gold);
+        }
+
+        .sommelier-label {
+            margin-left: 10px;
+            font-family: 'Cinzel';
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .floating-sommelier:hover .sommelier-label {
+            display: block;
+        }
+
         @media (max-width: 1000px) {
             .shop-grid {
                 grid-template-columns: 1fr;
@@ -504,407 +590,344 @@
         }
     </style>
     <script type="text/javascript" src="https://checkout.wompi.co/widget.js"></script>
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <div class="cart-overlay" id="overlay" onclick="toggleCart()"></div>
-        <div class="cart-drawer" id="cartDrawer">
-            <div class="cart-header">
-                <h2>Mi Selección</h2>
-                <button class="close-cart" onclick="toggleCart()">✕</button>
-            </div>
-            <div id="cart-items">
-            </div>
-            <div class="cart-footer">
-                <div class="total-display">
-                    <span>Total</span>
-                    <span id="drawerTotal">$0</span>
-                </div>
-                <button class="btn-luxury" style="background: var(--cocoa); color: var(--cream);"
-                    onclick="finalizeSelection()">Asegurar Selección</button>
-            </div>
+    <div class="cart-overlay" id="overlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2>Mi Selección</h2>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
+        <div id="cart-items">
+        </div>
+        <div class="cart-footer">
+            <div class="total-display">
+                <span>Total</span>
+                <span id="drawerTotal">$0</span>
+            </div>
+            <button class="btn-luxury" style="background: var(--cocoa); color: var(--cream);"
+                onclick="finalizeSelection()">Asegurar Selección</button>
+        </div>
+    </div>
 
-        <nav id="navbar">
-            <img src="logo.png" alt="Logo Ancestral" class="nav-logo">
+    <nav id="navbar">
+        <div class="logo-container">
+            <img src="logo.png" alt="Ancestrales" class="nav-logo">
+        </div>
+        <div class="nav-menu-wrapper">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="#" class="active-link">Tienda</a></li>
                 <li><a href="bienestar2.html">Bienestar</a></li>
+                <li><a href="tienda.html" style="color: var(--gold-leaf);">Tienda</a></li>
                 <li><a href="historia3.html">El Origen</a></li>
-                <div class="cart-trigger" onclick="toggleCart()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="1.2">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
-                    </svg>
-                    <div class="cart-count" id="cartBadge">0</div>
-                </div>
+                <li><a href="#">Contacto</a></li>
+
+                <!-- Mantienes carrito -->
+                <li>
+                    <div class="cart-trigger" onclick="toggleCart()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.2">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+                        </svg>
+                        <div class="cart-count" id="cartBadge">0</div>
+                    </div>
+                </li>
             </ul>
-        </nav>
+        </div>
+    </nav>
 
-        <header class="shop-header reveal">
-            <span>Cosecha Limitada 2026</span>
-            <h1>Cosecha Ancestral</h1>
-            <div class="header-separator"></div>
-        </header>
+    <header class="shop-header reveal">
+        <span>Cosecha Limitada 2026</span>
+        <h1>Cosecha Ancestral</h1>
+        <div class="header-separator"></div>
+    </header>
 
-        <section class="shop-grid">
+    <section class="shop-grid">
 
-            <article class="product-card reveal">
-                <div class="exclusive-badge">Origen Único</div>
-                <div class="image-container">
-                    <img src="cacao1.jpeg" alt="Esencia de la Selva" loading="lazy">
-                </div>
-                <div class="product-info">
-                    <span
-                        style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
-                        100% Pureza</span>
-                    <h3>Esencia de la Selva</h3>
+        <article class="product-card featured reveal">
+            <div class="exclusive-badge">Origen Único</div>
+            <div class="image-container">
+                <img src="cacao1.jpeg" alt="Esencia de la Selva" loading="lazy">
+            </div>
+            <div class="product-info">
+                <span
+                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
+                    100% Pureza</span>
+                <h3>Esencia de la Selva</h3>
 
-                    <div class="tasting-notes">
-                        <div class="tasting-item">
-                            <span class="tasting-label">Aroma</span>
-                            <span class="tasting-val">Bosque Húmedo</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Cuerpo</span>
-                            <span class="tasting-val">Denso y Sedoso</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Final</span>
-                            <span class="tasting-val">Notas de Cacao Tostado</span>
-                        </div>
+                <div class="tasting-notes">
+                    <div class="tasting-item">
+                        <span class="tasting-label">Aroma</span>
+                        <span class="tasting-val">Bosque Húmedo</span>
                     </div>
-
-                    <p style="margin-bottom: 25px; color: var(--taupe);">Un chocolate de perfil arquitectónico. Notas de
-                        frutos rojos y madera noble de la selva virgen de Colombia.</p>
-                    <span class="price">$15.500 COP</span>
-                    <button class="btn-luxury" onclick="addToCart('Esencia de la Selva', 15500)">Añadir a mi
-                        Selección</button>
-                </div>
-            </article>
-
-            <article class="product-card reveal" style="margin-top: 60px;">
-                <div class="exclusive-badge">Molienda Manual</div>
-                <div class="image-container">
-                    <img src="cacao2.jpeg" alt="Alquimia de Especias" loading="lazy">
-                </div>
-                <div class="product-info">
-                    <span
-                        style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Infusión
-                        Ancestral</span>
-                    <h3>Alquimia de Especias</h3>
-
-                    <div class="tasting-notes">
-                        <div class="tasting-item">
-                            <span class="tasting-label">Aroma</span>
-                            <span class="tasting-val">Clavo y Canela</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Cuerpo</span>
-                            <span class="tasting-val">Equilibrado</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Final</span>
-                            <span class="tasting-val">Calidez persistente</span>
-                        </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Cuerpo</span>
+                        <span class="tasting-val">Denso y Sedoso</span>
                     </div>
-
-                    <p style="margin-bottom: 25px; color: var(--taupe);">La calidez del clavo de olor se funde con la
-                        canela
-                        de Ceilán en una danza sensorial que eleva el espíritu.</p>
-                    <span class="price">$12.900 COP</span>
-                    <button class="btn-luxury" onclick="addToCart('Alquimia de Especias', 12900)">Añadir a mi
-                        Selección</button>
-                </div>
-            </article>
-
-            <article class="product-card reveal">
-                <div class="exclusive-badge">Origen Único</div>
-                <div class="image-container">
-                    <img src="cacao3.jpeg" alt="Receta Centenaria" loading="lazy">
-                </div>
-                <div class="product-info">
-                    <span
-                        style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
-                        Mezcla de 7 granos</span>
-                    <h3>Chucula Sagrada</h3>
-
-                    <div class="tasting-notes">
-                        <div class="tasting-item">
-                            <span class="tasting-label">Aroma</span>
-                            <span class="tasting-val">Cereal Tostado</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Cuerpo</span>
-                            <span class="tasting-val">Cremoso y Denso</span>
-                        </div>
-                        <div class="tasting-item">
-                            <span class="tasting-label">Final</span>
-                            <span class="tasting-val">Tostado y ligeramente dulce</span>
-                        </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Final</span>
+                        <span class="tasting-val">Notas de Cacao Tostado</span>
                     </div>
-
-                    <p style="margin-bottom: 25px; color: var(--taupe);">Más que un alimento, es un ritual de fuerza.
-                        Siete
-                        granos ancestrales tostados al fuego de leña.</p>
-                    <span class="price">$18.000 COP</span>
-                    <button class="btn-luxury" onclick="addToCart('Esencia de la Selva', 15500)">Añadir a mi
-                        Selección</button>
                 </div>
-            </article>
 
+                <p style="margin-bottom: 25px; color: var(--taupe);">Un chocolate de perfil arquitectónico. Notas de
+                    frutos rojos y madera noble de la selva virgen de Colombia.</p>
+                <span class="price">$15.500 COP</span>
+                <button class="btn-luxury" onclick="addToCart('Esencia de la Selva', 15500)">Añadir a mi
+                    Selección</button>
+            </div>
+        </article>
 
-        </section>
+        <article class="product-card reveal" >
+            <div class="exclusive-badge">Molienda Manual</div>
+            <div class="image-container">
+                <img src="cacao2.jpeg" alt="Alquimia de Especias" loading="lazy">
+            </div>
+            <div class="product-info">
+                <span
+                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Infusión
+                    Ancestral</span>
+                <h3>Alquimia de Especias</h3>
 
-        <footer>
-            <img src="logo.png" alt="Logo" class="footer-logo">
-            <p>© 2026 CHOCOLATES ANCESTRALES | ALTA CHOCOLATERÍA DE ORIGEN</p>
-            <p style="margin-top: 15px; font-size: 0.5rem; opacity: 0.4; letter-spacing: 2px;">BOGOTÁ • COLOMBIA</p>
-        </footer>
-
-        <script>
-
-            const API_BASE_URL = "https://ancestrales-1.onrender.com";
-            // --- PERSISTENCIA Y ESTADO ---
-            // Cargamos el carrito desde LocalStorage al iniciar, o vacío si no hay nada
-            let cart = JSON.parse(localStorage.getItem('cart_ancestral')) || [];
-
-            // Al cargar la página, verificamos si es una visita recurrente para la velocidad de animación
-            if (sessionStorage.getItem('visitado')) {
-                document.documentElement.style.setProperty('--anim-speed', '0.3s');
-            } else {
-                sessionStorage.setItem('visitado', 'true');
-            }
-
-            // --- FUNCIONES DE ALMACENAMIENTO ---
-            function saveCart() {
-                localStorage.setItem('cart_ancestral', JSON.stringify(cart));
-            }
-
-            // --- ANIMACIONES DE ENTRADA ---
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('active');
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-            // --- LÓGICA DE CARRITO ---
-            function toggleCart() {
-                const drawer = document.getElementById('cartDrawer');
-                const overlay = document.getElementById('overlay');
-
-                if (drawer.classList.contains('active')) {
-                    drawer.classList.remove('active');
-                    overlay.classList.remove('active');
-                    setTimeout(() => overlay.style.display = 'none', 500);
-                } else {
-                    overlay.style.display = 'block';
-                    setTimeout(() => {
-                        drawer.classList.add('active');
-                        overlay.classList.add('active');
-                    }, 10);
-                }
-            }
-
-            function addToCart(name, price) {
-                const existingItem = cart.find(item => item.name === name);
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({ name, price, quantity: 1 });
-                }
-                saveCart(); // Guardamos cambios
-                updateUI();
-                if (!document.getElementById('cartDrawer').classList.contains('active')) {
-                    toggleCart();
-                }
-            }
-
-            function changeQuantity(index, delta) {
-                cart[index].quantity += delta;
-                if (cart[index].quantity <= 0) {
-                    cart.splice(index, 1);
-                }
-                saveCart(); // Guardamos cambios
-                updateUI();
-            }
-
-            function updateManual(index, value) {
-                let val = parseInt(value);
-                if (isNaN(val) || val <= 0) {
-                    cart.splice(index, 1);
-                } else {
-                    cart[index].quantity = val;
-                }
-                saveCart(); // Guardamos cambios
-                updateUI();
-            }
-
-            function onlyNumbers(event) {
-                let code = (event.which) ? event.which : event.keyCode;
-                if (code > 31 && (code < 48 || code > 57)) {
-                    event.preventDefault();
-                    return false;
-                }
-                return true;
-            }
-
-            function updateUI() {
-                const container = document.getElementById('cart-items');
-                const badge = document.getElementById('cartBadge');
-                const totalDisp = document.getElementById('drawerTotal');
-
-                container.innerHTML = '';
-                let total = 0;
-                let totalUnits = 0;
-
-                cart.forEach((item, index) => {
-                    const itemTotal = item.price * item.quantity;
-                    total += itemTotal;
-                    totalUnits += item.quantity;
-
-                    container.innerHTML += `
-            <div class="cart-item">
-                <div class="cart-item-details">
-                    <h4>${item.name}</h4>
-                    <span class="item-price">$${itemTotal.toLocaleString('es-CO')}</span>
+                <div class="tasting-notes">
+                    <div class="tasting-item">
+                        <span class="tasting-label">Aroma</span>
+                        <span class="tasting-val">Clavo y Canela</span>
+                    </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Cuerpo</span>
+                        <span class="tasting-val">Equilibrado</span>
+                    </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Final</span>
+                        <span class="tasting-val">Calidez persistente</span>
+                    </div>
                 </div>
-                <div class="quantity-controls">
-                    <button class="btn-qty" onclick="changeQuantity(${index}, -1)">-</button>
-                    <input type="number" 
-                           class="qty-input" 
-                           value="${item.quantity}" 
-                           onchange="updateManual(${index}, this.value)"
-                           onkeypress="return onlyNumbers(event)">
-                    <button class="btn-qty" onclick="changeQuantity(${index}, 1)">+</button>
+
+                <p style="margin-bottom: 25px; color: var(--taupe);">La calidez del clavo de olor se funde con la
+                    canela
+                    de Ceilán en una danza sensorial que eleva el espíritu.</p>
+                <span class="price">$12.900 COP</span>
+                <button class="btn-luxury" onclick="addToCart('Alquimia de Especias', 12900)">Añadir a mi
+                    Selección</button>
+            </div>
+        </article>
+
+        <article class="product-card reveal">
+            <div class="exclusive-badge">Origen Único</div>
+            <div class="image-container">
+                <img src="cacao3.jpeg" alt="Receta Centenaria" loading="lazy">
+            </div>
+            <div class="product-info">
+                <span
+                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
+                    Mezcla de 7 granos</span>
+                <h3>Chucula Sagrada</h3>
+
+                <div class="tasting-notes">
+                    <div class="tasting-item">
+                        <span class="tasting-label">Aroma</span>
+                        <span class="tasting-val">Cereal Tostado</span>
+                    </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Cuerpo</span>
+                        <span class="tasting-val">Cremoso y Denso</span>
+                    </div>
+                    <div class="tasting-item">
+                        <span class="tasting-label">Final</span>
+                        <span class="tasting-val">Tostado y ligeramente dulce</span>
+                    </div>
                 </div>
-            </div>`;
-                });
 
-                badge.innerText = totalUnits;
-                totalDisp.innerText = `$${total.toLocaleString('es-CO')}`;
-            }
+                <p style="margin-bottom: 25px; color: var(--taupe);">Más que un alimento, es un ritual de fuerza.
+                    Siete
+                    granales ancestrales tostados al fuego de leña.</p>
+                <span class="price">$18.000 COP</span>
+                <button class="btn-luxury" onclick="addToCart('Chucula Sagrada', 18000)">Añadir a mi
+                    Selección</button>
+            </div>
+        </article>
 
+    </section>
 
-            // --- FINALIZAR SELECCIÓN CON FIRMA DE SEGURIDAD ---
-            async function finalizeSelection() {
-                if (cart.length === 0) return alert("Su selección está vacía.");
+    <footer>
+        <img src="logo.png" class="footer-logo" alt="Ancestrales" style="filter: brightness(0) invert(1);">
+        <p style="font-family: 'Cinzel'; letter-spacing: 6px; font-size: 0.75rem; opacity: 0.6;">
+            © 2026 ANCESTRALES | ALTO CACAO DE ORIGEN
+        </p>
+        <p style="margin-top: 15px; font-size: 0.6rem; opacity: 0.4; letter-spacing: 2px;">
+            BOGOTÁ • COLOMBIA
+        </p>
+    </footer>
+    <script>
+        const API_BASE_URL = "https://ancestrales-1.onrender.com";
+        let cart = JSON.parse(localStorage.getItem('cart_ancestral')) || [];
 
-                let total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-                const reference = "ANCESTRAL-" + Date.now();
+        if (sessionStorage.getItem('visitado')) {
+            document.documentElement.style.setProperty('--anim-speed', '0.3s');
+        } else {
+            sessionStorage.setItem('visitado', 'true');
+        }
 
-                try {
-                    // Solicitamos la firma de integridad al backend para evitar manipulaciones de precio
-                    const sigRes = await fetch(`${API_BASE_URL}/generate-signature`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            reference: reference,
-                            amount_in_cents: total * 100
-                        })
-                    });
+        function saveCart() {
+            localStorage.setItem('cart_ancestral', JSON.stringify(cart));
+        }
 
-                    const { signature } = await sigRes.json();
-
-                    // Inicializamos Wompi con la firma recibida
-                    var checkout = new WidgetCheckout({
-                        currency: 'COP',
-                        amountInCents: total * 100,
-                        reference: reference,
-                        publicKey: 'pub_test_XXXXX', // 👈 Usa tu llave pública de Wompi
-                        signature: { integrity: signature } // FIRMA VALIDADA POR TU SERVIDOR
-                    });
-
-                    checkout.open(function (result) {
-                        if (result.transaction.status === 'APPROVED') {
-                            alert("Pago aprobado. Su selección ancestral ha sido reservada.");
-                            cart = [];
-                            saveCart();
-                            updateUI();
-                            toggleCart();
-                        }
-                    });
-                } catch (e) {
-                    alert("No se pudo validar la seguridad de la transacción. Intente de nuevo.");
-                }
-            }
-
-            // Inicializar la interfaz con lo que haya en LocalStorage
-            updateUI();
-
-            // Scroll effect para el navbar
-            window.addEventListener('scroll', () => {
-                const nav = document.getElementById('navbar');
-                if (window.scrollY > 50) {
-                    nav.style.padding = '15px 8%';
-                    nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
-                } else {
-                    nav.style.padding = '30px 8%';
-                    nav.style.boxShadow = 'none';
-                }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        </script>
+        }, { threshold: 0.1 });
 
-        <a href="sommelier.html" class="floating-sommelier" title="Consultar al Sommelier">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <span class="sommelier-label">Sommelier</span>
-        </a>
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        <style>
-            .floating-sommelier {
-                position: fixed;
-                bottom: 30px;
-                right: 30px;
-                background: var(--cocoa);
-                color: var(--white);
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-decoration: none;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                z-index: 9999;
-                transition: var(--transition-smooth);
-                overflow: hidden;
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('overlay');
+
+            if (drawer.classList.contains('active')) {
+                drawer.classList.remove('active');
+                overlay.classList.remove('active');
+                setTimeout(() => overlay.style.display = 'none', 500);
+            } else {
+                overlay.style.display = 'block';
+                setTimeout(() => {
+                    drawer.classList.add('active');
+                    overlay.classList.add('active');
+                }, 10);
             }
+        }
 
-            .floating-sommelier:hover {
-                width: 160px;
-                border-radius: 30px;
-                background: var(--gold);
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
             }
-
-            .sommelier-label {
-                margin-left: 10px;
-                font-family: 'Cinzel';
-                font-size: 0.7rem;
-                letter-spacing: 2px;
-                text-transform: uppercase;
-                display: none;
-                white-space: nowrap;
+            saveCart();
+            updateUI();
+            if (!document.getElementById('cartDrawer').classList.contains('active')) {
+                toggleCart();
             }
+        }
 
-            .floating-sommelier:hover .sommelier-label {
-                display: block;
+        function changeQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
             }
+            saveCart();
+            updateUI();
+        }
 
-            @media (max-width: 768px) {
-                .floating-sommelier {
-                    bottom: 20px;
-                    right: 20px;
-                }
+        function updateManual(index, value) {
+            let val = parseInt(value);
+            if (isNaN(val) || val <= 0) {
+                cart.splice(index, 1);
+            } else {
+                cart[index].quantity = val;
             }
-        </style>
+            saveCart();
+            updateUI();
+        }
 
-    </body>
+        function onlyNumbers(event) {
+            let code = (event.which) ? event.which : event.keyCode;
+            if (code > 31 && (code < 48 || code > 57)) {
+                event.preventDefault();
+                return false;
+            }
+            return true;
+        }
+
+        function updateUI() {
+            const container = document.getElementById('cart-items');
+            const badge = document.getElementById('cartBadge');
+            const totalDisp = document.getElementById('drawerTotal');
+
+            container.innerHTML = '';
+            let total = 0;
+            let totalUnits = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                totalUnits += item.quantity;
+
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <span class="item-price">$${itemTotal.toLocaleString('es-CO')}</span>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="btn-qty" onclick="changeQuantity(${index}, -1)">-</button>
+                            <input type="number"
+                                   class="qty-input"
+                                   value="${item.quantity}"
+                                   onchange="updateManual(${index}, this.value)"
+                                   onkeypress="return onlyNumbers(event)">
+                            <button class="btn-qty" onclick="changeQuantity(${index}, 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+
+            badge.innerText = totalUnits;
+            totalDisp.innerText = `$${total.toLocaleString('es-CO')}`;
+        }
+
+        async function finalizeSelection() {
+            if (cart.length === 0) return alert("Su selección está vacía.");
+            let total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            const reference = "ANCESTRAL-" + Date.now();
+            try {
+                const sigRes = await fetch(`${API_BASE_URL}/generate-signature`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reference: reference, amount_in_cents: total * 100 })
+                });
+                const { signature } = await sigRes.json();
+                var checkout = new WidgetCheckout({
+                    currency: 'COP',
+                    amountInCents: total * 100,
+                    reference: reference,
+                    publicKey: 'pub_test_XXXXX',
+                    signature: { integrity: signature }
+                });
+                checkout.open(function (result) {
+                    if (result.transaction.status === 'APPROVED') {
+                        alert("Pago aprobado. Su selección ancestral ha sido reservada.");
+                        cart = [];
+                        saveCart();
+                        updateUI();
+                        toggleCart();
+                    }
+                });
+            } catch (e) {
+                alert("No se pudo validar la seguridad de la transacción. Intente de nuevo.");
+            }
+        }
+
+        updateUI();
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 80) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+    </script>
+
+    <a href="sommelier.html" class="floating-sommelier" title="Consultar al Sommelier">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="sommelier-label">Sommelier</span>
+    </a>
+
+</body>
 
 </html>
