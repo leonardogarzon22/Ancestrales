@@ -1,178 +1,246 @@
-/**
- * Módulo Global de Navegación por Voz con Wake Word ("Joao iníciate por favor")
- */
+// voice.js - Motor de Voz para Ancestrales (Asistente Joao)
 
-const initVoiceNavigation = () => {
+window.VoiceEngine = (function () {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    let isListening = false;
+    let isJoaoAwake = localStorage.getItem('joao_estado') === 'despierto';
+    let isJoaoSpeaking = false;
 
-    if (!SpeechRecognition) {
-        console.warn("API de reconocimiento de voz no soportada en este navegador.");
-        return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'es-CO';
-    recognition.continuous = true; // Escucha continua activada
-    recognition.interimResults = false;
-
-    let isJoaoAwake = false;
-    let sleepTimer = null;
-    let microphoneAuthorized = false;
-
-    const routes = {
-        "inicio": "index.html",
-        "tienda": "tienda.html",
-        "comprar": "tienda.html",
-        "bienestar": "bienestar2.html",
-        "historia": "historia3.html",
-        "origen": "historia3.html",
-        "sommelier": "sommelier.html",
-        "asesor": "sommelier.html"
-    };
-
-    // UI Feedback: Un pequeño indicador visual de que Joao está escuchando
-    const createStatusIndicator = () => {
-        const indicator = document.createElement("div");
-        indicator.id = "joaoStatus";
-        indicator.style.cssText = `
-            position: fixed;
-            bottom: 25px; 
-            left: 25px;
-            background: #0f0d0c;
-            color: #c5a059;
-            border: 1px solid #c5a059;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.7rem;
-            z-index: 3000;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-        `;
-        document.body.appendChild(indicator);
-        return indicator;
-    };
-
-    let statusElement;
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", () => { statusElement = createStatusIndicator(); });
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.lang = 'es-CO';
+        recognition.interimResults = false;
     } else {
-        statusElement = createStatusIndicator();
+        console.warn("La Web Speech API no es compatible con este navegador.");
     }
 
-    const updateStatus = (message, show) => {
-        if (!statusElement) return;
-        statusElement.innerText = message;
-        statusElement.style.opacity = show ? "1" : "0";
-    };
-
-    const goToSleep = () => {
-        isJoaoAwake = false;
-        updateStatus("", false);
-        console.log("Joao ha vuelto a modo de espera.");
-    };
-
-    recognition.onresult = (event) => {
-        // Obtener el último resultado pronunciado
-        const current = event.results.length - 1;
-        const transcript = event.results[current][0].transcript.toLowerCase().trim();
+    // ==========================================
+    // 1. INYECCIÓN DE LA INTERFAZ (LOGOS Y DEPURADOR)
+    // ==========================================
+    function inyectarInterfaz() {
+        // --- Botón Flotante para los Logos PNG ---
+        const btnVoz = document.createElement('div');
+        btnVoz.id = 'voice-trigger';
+        btnVoz.style.position = 'fixed';
+        btnVoz.style.bottom = '100px'; 
+        btnVoz.style.right = '30px';
+        btnVoz.style.cursor = 'pointer';
+        btnVoz.style.zIndex = '99999';
+        btnVoz.style.transition = 'transform 0.3s ease';
         
-        // Normalizar texto (quitar tildes para evitar fallos de coincidencia)
-        const normalizedTranscript = transcript.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        btnVoz.innerHTML = `<img id="voice-logo-img" src="mic-inactivo.png" alt="Micrófono" style="width: 60px; height: 60px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">`;
+        
+        btnVoz.onclick = () => window.VoiceEngine.toggle();
+        document.body.appendChild(btnVoz);
 
-        console.log(`Detectado: "${normalizedTranscript}"`);
+        // --- Depurador en Pantalla ---
+        const debugDiv = document.createElement('div');
+        debugDiv.id = 'joao-debug-overlay';
+        debugDiv.style.position = 'fixed';
+        debugDiv.style.bottom = '15px';
+        debugDiv.style.left = '50%';
+        debugDiv.style.transform = 'translateX(-50%)';
+        debugDiv.style.backgroundColor = 'rgba(28, 28, 30, 0.9)'; 
+        debugDiv.style.color = '#f4f1ea'; 
+        debugDiv.style.padding = '10px 20px';
+        debugDiv.style.borderRadius = '8px';
+        debugDiv.style.fontSize = '12px';
+        debugDiv.style.fontFamily = "'Montserrat', sans-serif";
+        debugDiv.style.zIndex = '99999';
+        debugDiv.style.textAlign = 'center';
+        debugDiv.style.border = '1px solid #c5a059'; 
+        debugDiv.style.display = isJoaoAwake ? 'block' : 'none';
+        debugDiv.innerHTML = `Joao en reposo...`;
+        document.body.appendChild(debugDiv);
+    }
 
-        // FASE 1: Esperando la palabra de activación
-        if (!isJoaoAwake) {
-            if (normalizedTranscript.includes("joao") && normalizedTranscript.includes("iniciate por favor")) {
+    function updateUI() {
+        const logoImg = document.getElementById('voice-logo-img');
+        const debugDiv = document.getElementById('joao-debug-overlay');
+        const trigger = document.getElementById('voice-trigger');
+
+        if (logoImg && debugDiv) {
+            if (isJoaoAwake) {
+                logoImg.src = 'mic-activo.png'; 
+                trigger.style.transform = 'scale(1.1)';
+                debugDiv.style.display = 'block';
+                debugDiv.innerHTML = `Joao escuchando... <br><span style="color:#c5a059; font-size:10px;">Di "Adiós Joao" para apagar</span>`;
+            } else {
+                logoImg.src = 'mic-inactivo.png'; 
+                trigger.style.transform = 'scale(1)';
+                debugDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function actualizarDepurador(texto) {
+        const debugDiv = document.getElementById('joao-debug-overlay');
+        if (debugDiv && isJoaoAwake) {
+            debugDiv.innerHTML = `Comando: <b style="color:#c5a059;">"${texto}"</b>`;
+        }
+    }
+
+    // ==========================================
+    // 2. SÍNTESIS DE VOZ (FEEDBACK AUDITIVO)
+    // ==========================================
+    function speak(text) {
+        if (!text) return;
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-CO';
+        utterance.rate = 1.0;
+
+        utterance.onstart = () => {
+            isJoaoSpeaking = true;
+            if (recognition && isListening) recognition.abort();
+        };
+
+        utterance.onend = () => {
+            setTimeout(() => {
+                isJoaoSpeaking = false;
+                startPhysicalListening();
+            }, 400);
+        };
+
+        synth.speak(utterance);
+    }
+
+    // ==========================================
+    // 3. NAVEGACIÓN Y COMANDOS DEL PROYECTO
+    // ==========================================
+    const comandosAncestrales = [
+        {
+            regex: /(ir a |volver a |ver )?(inicio|principal)/i,
+            action: () => {
+                speak("Regresando a la página principal.");
+                setTimeout(() => window.location.href = 'index.html', 1000);
+            }
+        },
+        {
+            regex: /(ir a |abrir |ver )?(tienda|productos|colección|coleccion)/i,
+            action: () => {
+                speak("Abriendo la colección de origen.");
+                setTimeout(() => window.location.href = 'tienda.html', 1000);
+            }
+        },
+        {
+            regex: /(ir a |abrir |ver )?bienestar/i,
+            action: () => {
+                speak("Accediendo a los rituales de bienestar ancestral.");
+                setTimeout(() => window.location.href = 'bienestar.html', 1000);
+            }
+        },
+        {
+            regex: /(ir a |abrir |ver )?(historia|el origen|origen)/i,
+            action: () => {
+                speak("Abriendo nuestra historia y legado.");
+                setTimeout(() => window.location.href = 'historia.html', 1000);
+            }
+        },
+        {
+            regex: /(consultar |hablar con el |abrir )?sommelier/i,
+            action: () => {
+                speak("Conectando con el sommelier.");
+                setTimeout(() => window.location.href = 'sommelier.html', 1000);
+            }
+        },
+        {
+            regex: /(abrir |ver |mostrar )?(carrito|reserva|mi selección|mi seleccion)/i,
+            action: () => {
+                if (typeof toggleCart === 'function') {
+                    speak("Abriendo tu selección.");
+                    toggleCart();
+                } else {
+                    speak("El carrito no está disponible en esta página.");
+                }
+            }
+        }
+    ];
+
+    // ==========================================
+    // 4. PROCESAMIENTO DEL TEXTO
+    // ==========================================
+    function processTranscript(transcript) {
+        if (isJoaoSpeaking) return;
+
+        let lowerTranscript = transcript.toLowerCase().trim();
+        actualizarDepurador(lowerTranscript);
+
+        // Activadores
+        if (lowerTranscript.includes('joao iníciate') || lowerTranscript.includes('joao iniciate') || lowerTranscript.includes('activar a joao')) {
+            if (!isJoaoAwake) {
                 isJoaoAwake = true;
-                console.log("¡Joao despertó!");
-                updateStatus("Joao escuchando...", true);
-                
-                // Joao se duerme automáticamente tras 8 segundos sin comandos
-                clearTimeout(sleepTimer);
-                sleepTimer = setTimeout(goToSleep, 8000);
+                localStorage.setItem('joao_estado', 'despierto');
+                speak("Joao activado y listo.");
+                updateUI();
             }
-            return; // Detenemos aquí si no estaba despierto
+            return;
         }
 
-        // FASE 2: Joao está despierto y procesa comandos
-        // Reiniciamos el temporizador de sueño porque el usuario está hablando
-        clearTimeout(sleepTimer);
-        sleepTimer = setTimeout(goToSleep, 8000);
+        // Desactivadores
+        if (lowerTranscript.includes('hasta luego joao') || lowerTranscript.includes('adiós joao') || lowerTranscript.includes('adios joao')) {
+            if (isJoaoAwake) {
+                isJoaoAwake = false;
+                localStorage.setItem('joao_estado', 'dormido');
+                speak("Joao entrando en reposo.");
+                updateUI();
+            }
+            return;
+        }
 
-        // Lógica de Enrutamiento
-        for (const [keyword, url] of Object.entries(routes)) {
-            if (normalizedTranscript.includes(keyword)) {
-                updateStatus(`Abriendo ${keyword}...`, true);
-                setTimeout(() => window.location.href = url, 800);
+        if (!isJoaoAwake) return;
+
+        // Limpieza de texto para comandos directos (ej: "Joao, ir a tienda" -> "ir a tienda")
+        let cleanTranscript = lowerTranscript.replace(/^(por favor|oye|escucha|joao)[,\s]*/g, '').trim();
+
+        for (let cmd of comandosAncestrales) {
+            const match = cleanTranscript.match(cmd.regex);
+            if (match) {
+                cmd.action(match);
                 return;
             }
         }
+    }
 
-        // Lógica de Interacción (Carrito)
-        if (normalizedTranscript.includes("carrito") || normalizedTranscript.includes("reserva")) {
-            if (typeof toggleCart === "function") {
-                toggleCart();
-                goToSleep(); // Se apaga tras cumplir la orden
-                return;
-            }
-        }
-
-        // Lógica de Accesibilidad Visual
-        if (normalizedTranscript.includes("accesibilidad") || normalizedTranscript.includes("modo lectura")) {
-            if (typeof toggleAccesibilidad === "function") {
-                toggleAccesibilidad();
-                goToSleep();
-                return;
-            } else if (document.getElementById('accToggle')) {
-                document.getElementById('accToggle').click();
-                goToSleep();
-                return;
-            }
-        }
-    };
-
-    // Bucle infinito: Reinicia el micrófono silenciosamente si se apaga por falta de sonido
-    recognition.onend = () => {
-        if (microphoneAuthorized) {
+    function startPhysicalListening() {
+        if (isJoaoSpeaking) return;
+        if (recognition && !isListening) {
             try {
                 recognition.start();
-            } catch (e) {
-                // Silenciar errores de colisión de arranque
-            }
+                isListening = true;
+            } catch (e) { }
         }
+    }
+
+    if (recognition) {
+        recognition.onresult = (event) => {
+            if (isJoaoSpeaking) return;
+            const current = event.resultIndex;
+            const transcript = event.results[current][0].transcript;
+            processTranscript(transcript);
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            if (!isJoaoSpeaking) startPhysicalListening();
+        };
+    }
+
+    window.addEventListener('load', () => {
+        inyectarInterfaz();
+        startPhysicalListening();
+        updateUI();
+    });
+
+    return {
+        toggle: function () {
+            isJoaoAwake = !isJoaoAwake;
+            localStorage.setItem('joao_estado', isJoaoAwake ? 'despierto' : 'dormido');
+            speak(isJoaoAwake ? "Joao te está escuchando." : "Joao apagado.");
+            updateUI();
+        },
+        feedback: speak
     };
-
-    recognition.onerror = (event) => {
-        if (event.error === 'not-allowed') {
-            console.error("Permiso de micrófono denegado.");
-            microphoneAuthorized = false;
-        }
-    };
-
-    // Activar el micrófono en la primera interacción del usuario con la página
-    const unlockMicrophone = () => {
-        if (!microphoneAuthorized) {
-            try {
-                recognition.start();
-                microphoneAuthorized = true;
-                console.log("Micrófono habilitado. Joao está esperando su frase de activación.");
-                
-                // Remover los event listeners para no llamarlo múltiples veces
-                document.removeEventListener('click', unlockMicrophone);
-                document.removeEventListener('keydown', unlockMicrophone);
-            } catch (e) {
-                console.log("Iniciando reconocimiento...");
-            }
-        }
-    };
-
-    document.addEventListener('click', unlockMicrophone);
-    document.addEventListener('keydown', unlockMicrophone);
-};
-
-// Inicializar el módulo
-initVoiceNavigation();
+})();

@@ -217,18 +217,48 @@
         body.accessibility-active h3 {
             font-size: 1.6rem !important;
         }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                padding: 0;
+            }
+
+            .header-section h1 {
+                font-size: 2rem;
+                letter-spacing: 5px;
+            }
+
+            .visual-container {
+                width: 100%;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .video-wrapper {
+                width: 70%;
+                height: 80%;
+            }
+        }
     </style>
 </head>
 
 <body>
     <nav>
-            <img src="logo.png" alt="Logo" class="nav-logo">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="tienda.html">Tienda</a></li>
-                <li><a href="#" style="color:var(--gold);border-bottom:1px solid var(--gold);">Bienestar</a></li>
-            </ul>
-        
+        <img src="logo.png" alt="Logo" class="nav-logo">
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="tienda.html">Tienda</a></li>
+            <li><a href="#" style="color:var(--gold);border-bottom:1px solid var(--gold);">Bienestar</a></li>
+        </ul>
+
     </nav>
 
     <header class="header-section">
