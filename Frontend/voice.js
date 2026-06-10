@@ -24,14 +24,27 @@ window.VoiceEngine = (function () {
         const btnVoz = document.createElement('div');
         btnVoz.id = 'voice-trigger';
         btnVoz.style.position = 'fixed';
-        btnVoz.style.bottom = '100px'; 
-        btnVoz.style.right = '30px';
+        btnVoz.style.bottom = '120px';
+        btnVoz.style.right = '20px';
         btnVoz.style.cursor = 'pointer';
         btnVoz.style.zIndex = '99999';
         btnVoz.style.transition = 'transform 0.3s ease';
-        
-        btnVoz.innerHTML = `<img id="voice-logo-img" src="mic-inactivo.png" alt="Micrófono" style="width: 60px; height: 60px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">`;
-        
+
+        btnVoz.innerHTML = `
+        <img
+            id="voice-logo-img"
+            src="mic-inactivo.png"
+            alt="Micrófono"
+            style="
+                width: 150px;
+                height: 150px;
+                object-fit: contain;
+                filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+                transition: all 0.3s ease;
+            "
+        >
+    `;
+
         btnVoz.onclick = () => window.VoiceEngine.toggle();
         document.body.appendChild(btnVoz);
 
@@ -42,20 +55,20 @@ window.VoiceEngine = (function () {
         debugDiv.style.bottom = '15px';
         debugDiv.style.left = '50%';
         debugDiv.style.transform = 'translateX(-50%)';
-        debugDiv.style.backgroundColor = 'rgba(28, 28, 30, 0.9)'; 
-        debugDiv.style.color = '#f4f1ea'; 
+        debugDiv.style.backgroundColor = 'rgba(28, 28, 30, 0.9)';
+        debugDiv.style.color = '#f4f1ea';
         debugDiv.style.padding = '10px 20px';
         debugDiv.style.borderRadius = '8px';
         debugDiv.style.fontSize = '12px';
         debugDiv.style.fontFamily = "'Montserrat', sans-serif";
         debugDiv.style.zIndex = '99999';
         debugDiv.style.textAlign = 'center';
-        debugDiv.style.border = '1px solid #c5a059'; 
+        debugDiv.style.border = '1px solid #c5a059';
         debugDiv.style.display = isJoaoAwake ? 'block' : 'none';
         debugDiv.innerHTML = `Joao en reposo...`;
+
         document.body.appendChild(debugDiv);
     }
-
     function updateUI() {
         const logoImg = document.getElementById('voice-logo-img');
         const debugDiv = document.getElementById('joao-debug-overlay');
@@ -63,12 +76,12 @@ window.VoiceEngine = (function () {
 
         if (logoImg && debugDiv) {
             if (isJoaoAwake) {
-                logoImg.src = 'mic-activo.png'; 
+                logoImg.src = 'mic-activo.png';
                 trigger.style.transform = 'scale(1.1)';
                 debugDiv.style.display = 'block';
                 debugDiv.innerHTML = `Joao escuchando... <br><span style="color:#c5a059; font-size:10px;">Di "Adiós Joao" para apagar</span>`;
             } else {
-                logoImg.src = 'mic-inactivo.png'; 
+                logoImg.src = 'mic-inactivo.png';
                 trigger.style.transform = 'scale(1)';
                 debugDiv.style.display = 'none';
             }
