@@ -142,14 +142,14 @@ window.VoiceEngine = (function () {
             regex: /(ir a |abrir |ver )?bienestar/i,
             action: () => {
                 speak("Accediendo a los rituales de bienestar ancestral.");
-                setTimeout(() => window.location.href = 'bienestar.html', 1000);
+                setTimeout(() => window.location.href = 'bienestar2.html', 1000);
             }
         },
         {
             regex: /(ir a |abrir |ver )?(historia|el origen|origen)/i,
             action: () => {
                 speak("Abriendo nuestra historia y legado.");
-                setTimeout(() => window.location.href = 'historia.html', 1000);
+                setTimeout(() => window.location.href = 'historia3.html', 1000);
             }
         },
         {
