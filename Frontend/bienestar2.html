@@ -21,6 +21,26 @@
             --gold: #c5a059;
         }
 
+        /* 1. RESETEO GLOBAL DE CAJAS (Evita que la pantalla se bambolee) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 2. PROTECCIÓN DE TEXTO PARA iOS (Evita que el texto crezca al girar el iPhone) */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* 3. PROTECCIÓN DE IMÁGENES (Evita que rompan el ancho de la pantalla) */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         body {
             background-color: var(--cream);
             color: var(--cocoa);

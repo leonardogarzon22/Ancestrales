@@ -26,6 +26,27 @@
             box-sizing: border-box;
         }
 
+        input,
+        button,
+        textarea {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+
+        /* PROTECCIÓN DE TEXTO PARA iOS */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* PROTECCIÓN DE IMÁGENES GLOBALES */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         body {
             background-color: var(--obsidian);
             color: var(--bone);
@@ -56,7 +77,8 @@
             flex-direction: column;
             align-items: center;
             z-index: 1000;
-            background: transparent; /* Ahora inicia transparente */
+            background: transparent;
+            /* Ahora inicia transparente */
             transition: var(--transition-smooth);
             padding: 40px 6% 20px;
         }
@@ -64,6 +86,7 @@
         nav.scrolled {
             padding: 15px 6%;
             background: rgba(244, 241, 234, 0.98);
+            -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
@@ -74,16 +97,19 @@
         }
 
         .nav-logo {
-            width: 240px; /* Tamaño más elegante */
+            width: 240px;
+            /* Tamaño más elegante */
             height: auto;
             transition: var(--transition-smooth);
             display: block;
-            filter: brightness(0) invert(1); /* Logo blanco sobre fondo oscuro inicial */
+            filter: brightness(0) invert(1);
+            /* Logo blanco sobre fondo oscuro inicial */
         }
 
         nav.scrolled .nav-logo {
             width: 160px;
-            filter: none; /* Logo original sobre fondo claro */
+            filter: none;
+            /* Logo original sobre fondo claro */
         }
 
         nav.scrolled .logo-container {
@@ -106,7 +132,8 @@
 
         nav a {
             text-decoration: none;
-            color: var(--bone); /* Texto blanco inicial */
+            color: var(--bone);
+            /* Texto blanco inicial */
             font-size: 0.75rem;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -138,7 +165,7 @@
 
         /* --- SECCIÓN HERO OPTIMIZADA --- */
         .hero {
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -169,7 +196,8 @@
 
         /* --- BOTONES MÁS FINOS --- */
         .btn-luxury {
-            padding: 18px 45px; /* Proporciones más equilibradas */
+            padding: 18px 45px;
+            /* Proporciones más equilibradas */
             background: transparent;
             border: 1px solid rgba(197, 160, 89, 0.6);
             color: var(--gold-leaf);
@@ -232,7 +260,8 @@
             text-align: center;
             transition: var(--transition-smooth);
             padding: 30px;
-            background: rgba(255, 255, 255, 0.02); /* Sutil separación del fondo */
+            background: rgba(255, 255, 255, 0.02);
+            /* Sutil separación del fondo */
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
@@ -290,7 +319,7 @@
             transform: translateY(100%);
             transition: var(--transition-smooth);
             z-index: 2000;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .cart-bar.active {
@@ -301,7 +330,7 @@
             padding: 100px 6% 60px;
             text-align: center;
             background-color: #050505;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footer-logo {
@@ -320,14 +349,22 @@
         }
 
         @media (max-width: 968px) {
-            .product-card, .product-card:first-child {
+
+            .product-card,
+            .product-card:first-child {
                 grid-column: span 12;
                 flex-direction: column;
                 text-align: center;
                 padding: 20px;
             }
-            nav ul { display: none; }
-            .nav-logo { width: 180px; }
+
+            nav ul {
+                display: none;
+            }
+
+            .nav-logo {
+                width: 180px;
+            }
         }
     </style>
 </head>
@@ -354,11 +391,13 @@
 
     <section class="hero">
         <div class="hero-content reveal">
-            <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.2rem, 3vw, 1.8rem); letter-spacing: 4px; margin-bottom: 30px; color: var(--bone);">
+            <p
+                style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.2rem, 3vw, 1.8rem); letter-spacing: 4px; margin-bottom: 30px; color: var(--bone);">
                 Nutrición sagrada recuperada de las raíces
             </p>
             <h1>ANCESTRALES</h1>
-            <button class="btn-luxury" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
+            <button class="btn-luxury"
+                onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
                 Explorar la Cosecha
             </button>
         </div>
@@ -366,7 +405,8 @@
 
     <div class="section-title reveal" id="productos">
         <h2>Selección Premium</h2>
-        <p style="font-family: 'Playfair Display'; font-style: italic; opacity: 0.6; font-size: 1.1rem;">Ediciones limitadas numeradas de origen único</p>
+        <p style="font-family: 'Playfair Display'; font-style: italic; opacity: 0.6; font-size: 1.1rem;">Ediciones
+            limitadas numeradas de origen único</p>
     </div>
 
     <section class="grid-premium">
@@ -375,9 +415,11 @@
             <img src="cacao1.jpeg" alt="Obsidian" style="width: 50%; max-height: 450px; object-fit: cover;">
             <div class="product-info">
                 <h3 class="product-name">Obsidian 100% Pureza</h3>
-                <p style="margin-bottom: 20px; font-weight: 300; opacity: 0.7; font-size: 0.9rem; max-width: 400px;">Cacao criollo de alta montaña, notas a frutos rojos y tierra húmeda.</p>
+                <p style="margin-bottom: 20px; font-weight: 300; opacity: 0.7; font-size: 0.9rem; max-width: 400px;">
+                    Cacao criollo de alta montaña, notas a frutos rojos y tierra húmeda.</p>
                 <span class="price-tag">$12.000 COP</span>
-                <button class="btn-luxury" style="padding: 12px 30px;" onclick="addToCart('Obsidian 100%', 12000)">Añadir Reserva</button>
+                <button class="btn-luxury" style="padding: 12px 30px;"
+                    onclick="addToCart('Obsidian 100%', 12000)">Añadir Reserva</button>
             </div>
         </div>
 
@@ -386,31 +428,41 @@
             <img src="cacao2.jpeg" alt="Oro">
             <h3 class="product-name">Oro Especiado</h3>
             <span class="price-tag">$14.500 COP</span>
-            <button class="btn-luxury" style="padding: 12px 25px; font-size: 0.7rem;" onclick="addToCart('Oro Especiado', 14500)">Añadir Reserva</button>
+            <button class="btn-luxury" style="padding: 12px 25px; font-size: 0.7rem;"
+                onclick="addToCart('Oro Especiado', 14500)">Añadir Reserva</button>
         </div>
 
         <div class="product-card reveal">
             <img src="cacao3.jpeg" alt="Elixir">
             <h3 class="product-name">Elixir Ancestral</h3>
             <span class="price-tag">$9.500 COP</span>
-            <button class="btn-luxury" style="padding: 12px 25px; font-size: 0.7rem;" onclick="addToCart('Elixir Ancestral', 9500)">Añadir Reserva</button>
+            <button class="btn-luxury" style="padding: 12px 25px; font-size: 0.7rem;"
+                onclick="addToCart('Elixir Ancestral', 9500)">Añadir Reserva</button>
         </div>
     </section>
 
     <div class="cart-bar" id="cartBar">
         <div>
-            <p style="font-size: 0.6rem; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase;">Su Selección de Origen</p>
+            <p style="font-size: 0.6rem; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase;">Su Selección de
+                Origen</p>
             <h4 id="totalDisplay" style="font-family: 'Cinzel'; font-size: 1.3rem;">$0.00</h4>
         </div>
-        <button class="btn-luxury" style="background: var(--obsidian); color: var(--gold-leaf); border: none; padding: 12px 30px;" onclick="checkout()">
+        <button class="btn-luxury"
+            style="background: var(--obsidian); color: var(--gold-leaf); border: none; padding: 12px 30px;"
+            onclick="checkout()">
             Confirmar vía WhatsApp
         </button>
     </div>
 
     <!-- --- SECCIÓN SOMMELIER --- -->
-    <section class="reveal" style="padding: 120px 6%; text-align: center; background: linear-gradient(rgba(15,13,12,0.85), rgba(15,13,12,0.85)), url('./cacao-bg.jpg'); background-size: cover; background-position: center;">
-        <h2 style="font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 6px; color: var(--gold-leaf); margin-bottom: 20px;">¿No sabes qué cacao escoger?</h2>
-        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; margin-bottom: 35px; opacity: 0.8;">Habla con nuestro sommelier y descubre tu perfil ideal</p>
+    <section class="reveal"
+        style="padding: 120px 6%; text-align: center; background: linear-gradient(rgba(15,13,12,0.85), rgba(15,13,12,0.85)), url('./cacao-bg.jpg'); background-size: cover; background-position: center;">
+        <h2
+            style="font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 6px; color: var(--gold-leaf); margin-bottom: 20px;">
+            ¿No sabes qué cacao escoger?</h2>
+        <p
+            style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; margin-bottom: 35px; opacity: 0.8;">
+            Habla con nuestro sommelier y descubre tu perfil ideal</p>
         <a href="sommelier.html" style="text-decoration: none;">
             <button class="btn-luxury">Consultar Sommelier</button>
         </a>
@@ -459,4 +511,5 @@
     </script>
 
 </body>
+
 </html>

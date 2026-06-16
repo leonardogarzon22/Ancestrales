@@ -26,6 +26,27 @@
             box-sizing: border-box;
         }
 
+        input,
+        button,
+        textarea {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+
+        /* PROTECCIÓN DE TEXTO PARA iOS */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* PROTECCIÓN DE IMÁGENES GLOBALES */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         body {
             background-color: var(--obsidian);
             color: var(--bone);
@@ -65,6 +86,7 @@
         nav.scrolled {
             padding: 10px 6%;
             background: rgba(244, 241, 234, 0.98);
+            -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
         }
 
@@ -128,14 +150,14 @@
 
         /* --- SECCIÓN HERO CON IMAGEN DE CACAO PURO --- */
         .hero {
-            height: 100vh;
+            height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             text-align: center;
-            margin-top: 140px;
+            padding-top: 140px;
 
             /* Usamos una imagen de cacao crudo y saludable con un overlay oscuro */
             background-color: var(--obsidian);
@@ -335,7 +357,7 @@
             }
 
             .hero {
-                margin-top: 100px;
+                padding-top: 100px;
             }
         }
     </style>
