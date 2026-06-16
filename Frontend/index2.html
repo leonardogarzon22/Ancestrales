@@ -132,7 +132,7 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 400;
-            transition: 0.3s;
+            transition: color 0.3s ease;
         }
 
         nav a:hover {
@@ -154,6 +154,27 @@
             color: var(--gold-leaf);
         }
 
+        /* BOTÓN HAMBURGUESA (Oculto en Desktop) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 2px;
+            background-color: var(--obsidian);
+            transition: var(--transition-smooth);
+            transform-origin: left center;
+        }
+
         /* --- SECCIÓN HERO --- */
         .hero {
             min-height: 100dvh;
@@ -164,7 +185,6 @@
             overflow: hidden;
             text-align: center;
             padding: 160px 5% 40px;
-
             background-color: var(--obsidian);
             background-image: linear-gradient(rgba(15, 13, 12, 0.65), rgba(15, 13, 12, 0.65)),
                 url('./opcion6.png');
@@ -373,60 +393,110 @@
             }
         }
 
-        @media (max-width: 968px) {
+        @media (max-width: 768px) {
+            
+            /* Ajuste estructural de la Navegación */
             nav {
-                padding: 20px 5% 15px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 6% !important;
+            }
+
+            .logo-container {
+                margin-bottom: 0 !important;
             }
 
             .nav-logo {
-                width: 240px;
+                width: 160px !important;
+                margin-bottom: 0 !important;
             }
 
             nav.scrolled .nav-logo {
-                width: 160px;
+                width: 130px !important;
+            }
+
+            nav.scrolled .logo-container {
+                margin-bottom: 0 !important;
+            }
+
+            /* Activación de Hamburguesa */
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Animación a X */
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -2px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(1px, 1px);
+            }
+
+            /* Cortina elegante Full-Screen */
+            .nav-menu-wrapper {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--silk);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-20px);
+                transition: var(--transition-smooth);
+            }
+
+            .nav-menu-wrapper.active {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
             }
 
             nav ul {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                gap: 35px;
             }
 
             nav a {
-                font-size: 0.75rem;
-                letter-spacing: 2px;
+                font-size: 1.1rem !important;
+                letter-spacing: 4px !important;
             }
 
+            /* Botón Reserva integrado elegantemente en el menú móvil */
             .nav-reserva {
-                position: relative;
-                right: auto;
-                margin-left: 20px;
+                position: relative !important;
+                right: auto !important;
+                margin-left: 0 !important;
+                margin-top: 25px !important;
+                background: rgba(197, 160, 89, 0.1);
+                padding: 10px 30px !important;
+                border: 1px solid var(--gold-leaf);
+                color: var(--gold-leaf) !important;
                 font-weight: 600;
+                letter-spacing: 3px;
             }
 
+            /* Ajustes Adaptativos de Contenido */
             .hero {
-                padding-top: 180px;
+                padding-top: 140px;
             }
 
             .grid-premium {
                 gap: 30px;
                 padding-bottom: 100px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu-wrapper {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .nav-reserva {
-                margin-left: 0;
-                margin-top: 5px;
-                background: rgba(197, 160, 89, 0.1);
-                padding: 4px 15px;
-                border-radius: 20px;
-                color: var(--gold-leaf);
             }
 
             .product-card,
@@ -458,18 +528,20 @@
                 font-size: 1.8rem !important;
                 letter-spacing: 4px !important;
             }
+
+            /* Interfaz de Voz */
+            #voice-btn,
+            .voice-interface,
+            [class*="voice"],
+            [id*="voice"] {
+                transform: scale(0.75) !important;
+                transform-origin: bottom right;
+                bottom: 20px !important;
+                right: 20px !important;
+            }
         }
 
         @media (max-width: 480px) {
-            nav ul {
-                gap: 12px 18px;
-            }
-
-            nav a {
-                font-size: 0.7rem;
-                letter-spacing: 1px;
-            }
-
             .btn-luxury {
                 padding: 18px 35px;
                 width: 100%;
@@ -494,22 +566,6 @@
         [id*="voice"] {
             transition: var(--transition-smooth);
         }
-
-        @media (max-width: 768px) {
-
-            /* Reduce el tamaño del contenedor o botón un 30% en móviles */
-            #voice-btn,
-            .voice-interface,
-            [class*="voice"],
-            [id*="voice"] {
-                transform: scale(0.75) !important;
-                transform-origin: bottom right;
-                /* Alinea el encogimiento hacia la esquina inferior derecha */
-                bottom: 20px !important;
-                /* Lo separa un poco del borde para que sea fácil de presionar */
-                right: 20px !important;
-            }
-        }
     </style>
 </head>
 
@@ -519,7 +575,15 @@
         <div class="logo-container">
             <img src="logo.png" alt="Ancestrales" class="nav-logo">
         </div>
-        <div class="nav-menu-wrapper">
+
+        <!-- Botón Hamburguesa -->
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-menu-wrapper" id="nav-menu-wrapper">
             <ul>
                 <li><a href="#productos">Colección</a></li>
                 <li><a href="bienestar2.html">Bienestar</a></li>
@@ -535,8 +599,7 @@
 
     <section class="hero">
         <div class="hero-content reveal">
-            <p
-                style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.1rem, 3.8vw, 1.8rem); letter-spacing: clamp(2px, 0.5vw, 5px); margin-bottom: clamp(25px, 5vh, 45px); color: var(--bone); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.4;">
+            <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.1rem, 3.8vw, 1.8rem); letter-spacing: clamp(2px, 0.5vw, 5px); margin-bottom: clamp(25px, 5vh, 45px); color: var(--bone); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.4;">
                 Nutrición sagrada recuperada de las raíces
             </p>
             <h1>ANCESTRALES</h1>
@@ -549,8 +612,7 @@
 
     <div class="section-title reveal" id="productos">
         <h2>Selección Premium</h2>
-        <p
-            style="font-family: 'Playfair Display', serif; font-style: italic; opacity: 0.6; font-size: clamp(1rem, 2vw, 1.2rem);">
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; opacity: 0.6; font-size: clamp(1rem, 2vw, 1.2rem);">
             Ediciones limitadas numeradas de origen único
         </p>
     </div>
@@ -595,8 +657,7 @@
 
     <div class="cart-bar" id="cartBar">
         <div>
-            <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase;">Su Selección de
-                Origen</p>
+            <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase;">Su Selección de Origen</p>
             <h4 id="totalDisplay" style="font-family: 'Cinzel', serif; font-size: 1.5rem;">$0.00</h4>
         </div>
         <button class="btn-luxury" style="background: var(--obsidian); color: var(--gold-leaf); border: none;"
@@ -606,12 +667,10 @@
     </div>
 
     <section class="reveal" style="padding: 120px 6%; text-align: center; background: var(--obsidian);">
-        <h2
-            style="font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--gold-leaf); margin-bottom: 25px;">
+        <h2 style="font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--gold-leaf); margin-bottom: 25px;">
             ¿No sabes qué cacao escoger?
         </h2>
-        <p
-            style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;">
+        <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;">
             Habla con nuestro sommelier y descubre tu perfil ideal
         </p>
         <a href="sommelier.html" style="text-decoration: none;">
@@ -636,12 +695,33 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Efecto Scroll Navbar
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 80) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
         });
 
+        // Lógica del Menú Hamburguesa
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu-wrapper');
+        const navLinks = document.querySelectorAll('.nav-menu-wrapper a, .nav-reserva');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflowY = 'auto';
+            });
+        });
+
+        // Lógica de Carrito y WhatsApp
         let cart = [];
         let total = 0;
 

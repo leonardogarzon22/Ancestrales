@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>La Selección | Chocolates Ancestrales</title>
 
     <link
@@ -18,6 +18,8 @@
             --gold: #c5a059;
             --white: #ffffff;
             --obsidian: #0f0d0c;
+            --bone: #f4f1ea;
+            --silk: rgba(244, 241, 234, 0.95);
             --anim-speed: 0.8s;
             --transition-premium: all var(--anim-speed) cubic-bezier(0.23, 1, 0.32, 1);
             --transition-smooth: all 0.5s ease;
@@ -30,21 +32,20 @@
             outline: none;
         }
 
-        input,
-        button,
-        textarea {
+        input, button, textarea {
             -webkit-appearance: none;
             appearance: none;
             border-radius: 0;
         }
 
-        /* PROTECCIÓN DE TEXTO PARA iOS */
-        html {
+        html, body {
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
+            scroll-behavior: smooth;
+            overflow-x: hidden; 
+            width: 100%;
         }
 
-        /* PROTECCIÓN DE IMÁGENES GLOBALES */
         img {
             max-width: 100%;
             height: auto;
@@ -57,11 +58,11 @@
             font-family: 'Montserrat', sans-serif;
             background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             font-weight: 300;
-            overflow-x: hidden;
             line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SISTEMA DE REVELADO CINEMÁTICO --- */
+        /* --- SISTEMA DE REVELADO --- */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -73,9 +74,9 @@
             transform: translateY(0);
         }
 
-        /* --- NAVEGACIÓN DE ALTA GAMA --- */
+        /* --- NAVEGACIÓN (Desktop) --- */
         nav {
-            position: sticky;
+            position: fixed;
             top: 0;
             width: 100%;
             display: flex;
@@ -89,7 +90,7 @@
         }
 
         nav.scrolled {
-            padding: 10px 6%;
+            padding: 12px 6%;
             background: rgba(244, 241, 234, 0.98);
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
@@ -102,7 +103,6 @@
 
         .nav-logo {
             width: 320px;
-            /* Igual al index para evitar saltos */
             height: auto;
             transition: var(--transition-smooth);
             display: block;
@@ -121,6 +121,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         nav ul {
@@ -136,42 +137,51 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             font-weight: 400;
-            transition: 0.3s;
+            transition: color 0.3s ease;
         }
 
         nav a:hover {
-            color: var(--gold-leaf);
+            color: var(--gold);
         }
 
-        .cart-trigger {
-            position: relative;
-            cursor: pointer;
-            padding: 10px;
-            margin-left: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .cart-count {
+        .nav-reserva {
             position: absolute;
-            top: 0;
             right: 0;
-            background: var(--gold);
-            color: var(--white);
-            font-size: 0.65rem;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.3);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            color: var(--obsidian);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-reserva:hover {
+            color: var(--gold);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1200;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 2px;
+            background-color: var(--obsidian);
+            transition: var(--transition-smooth);
+            transform-origin: left center;
         }
 
         /* --- CABECERA EDITORIAL --- */
         .shop-header {
-            padding: 160px 5% 100px;
+            padding: 180px 5% 100px;
             text-align: center;
         }
 
@@ -187,11 +197,11 @@
 
         .shop-header h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            letter-spacing: 18px;
+            font-size: clamp(2.2rem, 6vw, 5rem);
+            letter-spacing: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            line-height: 1;
+            line-height: 1.2;
         }
 
         .header-separator {
@@ -201,13 +211,13 @@
             margin: 45px auto;
         }
 
+        /* --- GRID DE PRODUCTOS (Desktop) --- */
         .shop-grid {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 8% 180px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
+            grid-template-columns: repeat(2, 1fr);
             gap: 80px;
         }
 
@@ -229,11 +239,7 @@
             aspect-ratio: 5/4;
         }
 
-        .product-card:not(.featured) {
-            margin-top: 0 !important;
-        }
-
-        /* AJUSTE: Marco con estética precolombina/artesanal */
+        /* Marco de las imágenes */
         .image-container {
             width: 100%;
             aspect-ratio: 4/5;
@@ -244,16 +250,12 @@
             cursor: crosshair;
             border: 1px solid rgba(197, 160, 89, 0.2);
             padding: 15px;
-            /* Crea el efecto de marco */
         }
 
         .image-container::before {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
             border: 1px solid var(--gold);
             opacity: 0.3;
             pointer-events: none;
@@ -342,22 +344,21 @@
             color: var(--cocoa);
             font-family: 'Cinzel', serif;
             text-transform: uppercase;
-            letter-spacing: 7px;
+            letter-spacing: 6px;
             font-size: 0.85rem;
             cursor: pointer;
             position: relative;
             z-index: 1;
             transition: 0.6s;
             overflow: hidden;
+            text-align: center;
         }
 
         .btn-luxury::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
             background: var(--cocoa);
             transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             z-index: -1;
@@ -371,13 +372,10 @@
             left: 0;
         }
 
-        /* --- CARRITO LATERAL (DRAWER LUXURY) --- */
+        /* --- CARRITO LATERAL --- */
         .cart-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 13, 12, 0.6);
             backdrop-filter: blur(8px);
             z-index: 2000;
@@ -393,10 +391,8 @@
 
         .cart-drawer {
             position: fixed;
-            top: 0;
-            right: -500px;
-            width: 500px;
-            height: 100%;
+            top: 0; right: -500px;
+            width: 500px; height: 100%;
             background: var(--cream);
             z-index: 2001;
             transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1);
@@ -446,23 +442,6 @@
             margin-bottom: 35px;
             border-bottom: 1px solid rgba(78, 52, 46, 0.05);
             padding-bottom: 20px;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .cart-item-details {
-            flex-grow: 1;
         }
 
         .cart-item-details h4 {
@@ -488,36 +467,19 @@
         }
 
         .btn-qty {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: var(--cocoa);
             cursor: pointer;
             font-family: 'Montserrat';
             font-weight: 500;
             font-size: 1.1rem;
-            transition: 0.3s;
-        }
-
-        .btn-qty:hover {
-            color: var(--gold);
         }
 
         .qty-input {
-            width: 35px;
-            border: none;
-            background: transparent;
+            width: 35px; border: none; background: transparent;
             text-align: center;
-            font-family: 'Cinzel';
-            color: var(--cocoa);
-            font-size: 0.9rem;
-            font-weight: 600;
-            -moz-appearance: textfield;
-        }
-
-        .qty-input::-webkit-outer-spin-button,
-        .qty-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            font-family: 'Cinzel'; color: var(--cocoa);
+            font-size: 0.9rem; font-weight: 600;
         }
 
         .cart-footer {
@@ -526,12 +488,9 @@
         }
 
         .total-display {
-            display: flex;
-            justify-content: space-between;
-            font-family: 'Cinzel';
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            letter-spacing: 3px;
+            display: flex; justify-content: space-between;
+            font-family: 'Cinzel'; font-size: 1.3rem;
+            margin-bottom: 40px; letter-spacing: 3px;
         }
 
         /* --- FOOTER --- */
@@ -543,87 +502,158 @@
         }
 
         .footer-logo {
-            width: 80px;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-
-        footer p {
-            font-family: 'Cinzel';
-            letter-spacing: 6px;
-            font-size: 0.75rem;
-            opacity: 0.5;
+            width: 80px; margin-bottom: 40px; opacity: 0.8;
+            margin-left: auto; margin-right: auto;
         }
 
         /* SOMMELIER FLOATING BUTTON */
         .floating-sommelier {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--cocoa);
-            color: var(--white);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            transition: var(--transition-premium);
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--cocoa); color: var(--white);
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000; transition: var(--transition-premium);
             overflow: hidden;
         }
 
         .floating-sommelier:hover {
-            width: 160px;
-            border-radius: 30px;
-            background: var(--gold);
+            width: 160px; border-radius: 30px; background: var(--gold);
         }
 
         .sommelier-label {
-            margin-left: 10px;
-            font-family: 'Cinzel';
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            display: none;
-            white-space: nowrap;
+            margin-left: 10px; font-family: 'Cinzel'; font-size: 0.7rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            display: none; white-space: nowrap;
         }
 
         .floating-sommelier:hover .sommelier-label {
             display: block;
         }
 
-        @media (max-width: 1000px) {
+
+        /* =========================================
+           MEDIA QUERIES - DISEÑO 100% RESPONSIVO
+           ========================================= */
+        
+        /* Tablets y Pantallas Medianas */
+        @media (max-width: 1024px) {
             .shop-grid {
-                grid-template-columns: 1fr;
-                gap: 80px;
+                grid-template-columns: 1fr; /* Fuerza 1 columna general */
+                gap: 70px;
+                padding: 0 5% 120px;
             }
 
             .product-card.featured {
-                grid-template-columns: 1fr;
+                grid-column: span 1; /* Elimina la expansión de 2 columnas */
+                grid-template-columns: 1fr; /* Apila imagen e info verticalmente */
+                gap: 30px;
             }
 
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 15px;
+            .product-card.featured .image-container {
+                aspect-ratio: auto;
+            }
+        }
+
+        /* Dispositivos Móviles (Teléfonos) */
+        @media (max-width: 768px) {
+            
+            /* Ajuste del Nav */
+            nav {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 15px 5% !important;
+                min-height: 70px;
             }
 
-            .tasting-notes {
-                flex-direction: column;
-                gap: 15px;
+            .logo-container {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-bottom: 0 !important;
             }
 
-            .cart-drawer {
+            .nav-logo { width: 140px !important; }
+            nav.scrolled .nav-logo { width: 120px !important; }
+
+            .menu-toggle { display: flex; }
+            .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(2px, -2px); }
+            .menu-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+            .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+            /* Menú Móvil Pantalla Completa */
+            .nav-menu-wrapper {
+                position: fixed; top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--silk);
+                -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+                flex-direction: column; justify-content: center; align-items: center;
+                opacity: 0; pointer-events: none;
+                transform: translateY(-20px); transition: var(--transition-smooth);
+            }
+
+            .nav-menu-wrapper.active {
+                opacity: 1; pointer-events: auto; transform: translateY(0);
+            }
+
+            nav ul { flex-direction: column; align-items: center; gap: 35px; }
+            nav a { font-size: 1.1rem !important; letter-spacing: 4px !important; }
+
+            .nav-reserva {
+                position: relative !important; margin-top: 30px !important;
+                background: rgba(197, 160, 89, 0.1); padding: 12px 30px !important;
+                border: 1px solid var(--gold); color: var(--gold) !important;
+            }
+
+            /* CABECERA MÓVIL */
+            .shop-header { padding-top: 130px; }
+            .shop-header h1 { letter-spacing: 4px; font-size: 2.2rem; }
+
+            /* TARJETAS DE PRODUCTO MÓVIL */
+            .product-card {
+                text-align: center; /* Centrar textos para mayor limpieza visual */
+            }
+
+            .exclusive-badge {
+                top: 15px; left: 15px;
+                font-size: 0.55rem; padding: 8px 15px;
+            }
+
+            .product-info h3 {
+                font-size: 1.5rem; letter-spacing: 4px;
+            }
+
+            .product-info p {
+                text-align: center;
+            }
+
+            .product-info .price {
+                text-align: center; margin-bottom: 25px;
+            }
+
+            /* CORRECCIÓN: Botones desbordados */
+            .btn-luxury {
+                padding: 18px 15px;
+                font-size: 0.75rem;
+                letter-spacing: 2px; /* Reducción drástica del espaciado */
+                white-space: normal; /* Permite que el texto baje a 2 líneas si no cabe */
+                line-height: 1.5;
+                display: block;
                 width: 100%;
-                right: -100%;
             }
 
-            .shop-header h1 {
-                letter-spacing: 8px;
+            /* CORRECCIÓN: Notas de cata */
+            .tasting-notes {
+                flex-direction: column; /* Apila las notas en vertical */
+                align-items: center;
+                gap: 15px;
+                padding: 15px 0;
+            }
+
+            /* Carrito Móvil */
+            .cart-drawer {
+                width: 100%; right: -100%; padding: 40px 25px;
             }
         }
     </style>
@@ -638,8 +668,7 @@
             <h2>Mi Selección</h2>
             <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
-        <div id="cart-items">
-        </div>
+        <div id="cart-items"></div>
         <div class="cart-footer">
             <div class="total-display">
                 <span>Total</span>
@@ -651,28 +680,25 @@
     </div>
 
     <nav id="navbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </button>
+
         <div class="logo-container">
             <img src="logo.png" alt="Ancestrales" class="nav-logo">
         </div>
-        <div class="nav-menu-wrapper">
+
+        <div class="nav-menu-wrapper" id="nav-menu-wrapper">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="bienestar2.html">Bienestar</a></li>
-                <li><a href="tienda.html" style="color: var(--gold-leaf);">Tienda</a></li>
+                <li><a href="tienda.html" style="color: var(--gold);">Tienda</a></li>
                 <li><a href="historia3.html">El Origen</a></li>
                 <li><a href="#">Contacto</a></li>
-
-                <!-- Mantienes carrito -->
-                <li>
-                    <div class="cart-trigger" onclick="toggleCart()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.2">
-                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
-                        </svg>
-                        <div class="cart-count" id="cartBadge">0</div>
-                    </div>
-                </li>
             </ul>
+            <div class="nav-reserva" onclick="toggleCart()">
+                SELECCIÓN (<span id="cartBadge">0</span>)
+            </div>
         </div>
     </nav>
 
@@ -685,14 +711,14 @@
     <section class="shop-grid">
 
         <article class="product-card featured reveal">
-            <div class="exclusive-badge">Origen Único</div>
             <div class="image-container">
+                <div class="exclusive-badge">Origen Único</div>
                 <img src="cacao1.jpeg" alt="Esencia de la Selva" loading="lazy">
             </div>
             <div class="product-info">
-                <span
-                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
-                    100% Pureza</span>
+                <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">
+                    Cacao 100% Pureza
+                </span>
                 <h3>Esencia de la Selva</h3>
 
                 <div class="tasting-notes">
@@ -713,20 +739,19 @@
                 <p style="margin-bottom: 25px; color: var(--taupe);">Un chocolate de perfil arquitectónico. Notas de
                     frutos rojos y madera noble de la selva virgen de Colombia.</p>
                 <span class="price">$15.500 COP</span>
-                <button class="btn-luxury" onclick="addToCart('Esencia de la Selva', 15500)">Añadir a mi
-                    Selección</button>
+                <button class="btn-luxury" onclick="addToCart('Esencia de la Selva', 15500)">Añadir a mi Selección</button>
             </div>
         </article>
 
         <article class="product-card reveal">
-            <div class="exclusive-badge">Molienda Manual</div>
             <div class="image-container">
+                <div class="exclusive-badge">Molienda Manual</div>
                 <img src="cacao2.jpeg" alt="Alquimia de Especias" loading="lazy">
             </div>
             <div class="product-info">
-                <span
-                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Infusión
-                    Ancestral</span>
+                <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">
+                    Infusión Ancestral
+                </span>
                 <h3>Alquimia de Especias</h3>
 
                 <div class="tasting-notes">
@@ -745,23 +770,21 @@
                 </div>
 
                 <p style="margin-bottom: 25px; color: var(--taupe);">La calidez del clavo de olor se funde con la
-                    canela
-                    de Ceilán en una danza sensorial que eleva el espíritu.</p>
+                    canela de Ceilán en una danza sensorial que eleva el espíritu.</p>
                 <span class="price">$12.900 COP</span>
-                <button class="btn-luxury" onclick="addToCart('Alquimia de Especias', 12900)">Añadir a mi
-                    Selección</button>
+                <button class="btn-luxury" onclick="addToCart('Alquimia de Especias', 12900)">Añadir a mi Selección</button>
             </div>
         </article>
 
         <article class="product-card reveal">
-            <div class="exclusive-badge">Origen Único</div>
             <div class="image-container">
+                <div class="exclusive-badge">Origen Único</div>
                 <img src="cacao3.jpeg" alt="Receta Centenaria" loading="lazy">
             </div>
             <div class="product-info">
-                <span
-                    style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Cacao
-                    Mezcla de 7 granos</span>
+                <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">
+                    Cacao Mezcla de 7 granos
+                </span>
                 <h3>Chucula Sagrada</h3>
 
                 <div class="tasting-notes">
@@ -775,16 +798,14 @@
                     </div>
                     <div class="tasting-item">
                         <span class="tasting-label">Final</span>
-                        <span class="tasting-val">Tostado y ligeramente dulce</span>
+                        <span class="tasting-val">Tostado y dulce</span>
                     </div>
                 </div>
 
                 <p style="margin-bottom: 25px; color: var(--taupe);">Más que un alimento, es un ritual de fuerza.
-                    Siete
-                    granales ancestrales tostados al fuego de leña.</p>
+                    Siete granos ancestrales tostados al fuego de leña.</p>
                 <span class="price">$18.000 COP</span>
-                <button class="btn-luxury" onclick="addToCart('Chucula Sagrada', 18000)">Añadir a mi
-                    Selección</button>
+                <button class="btn-luxury" onclick="addToCart('Chucula Sagrada', 18000)">Añadir a mi Selección</button>
             </div>
         </article>
 
@@ -799,6 +820,7 @@
             BOGOTÁ • COLOMBIA
         </p>
     </footer>
+    
     <script>
         const API_BASE_URL = "https://ancestrales-1.onrender.com";
         let cart = JSON.parse(localStorage.getItem('cart_ancestral')) || [];
@@ -809,10 +831,6 @@
             sessionStorage.setItem('visitado', 'true');
         }
 
-        function saveCart() {
-            localStorage.setItem('cart_ancestral', JSON.stringify(cart));
-        }
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('active');
@@ -821,9 +839,43 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 80) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu-wrapper');
+        const navLinks = document.querySelectorAll('.nav-menu-wrapper ul a');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflowY = 'auto';
+            });
+        });
+
+        function saveCart() {
+            localStorage.setItem('cart_ancestral', JSON.stringify(cart));
+        }
+
         function toggleCart() {
             const drawer = document.getElementById('cartDrawer');
             const overlay = document.getElementById('overlay');
+
+            if (navMenu.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflowY = 'auto';
+            }
 
             if (drawer.classList.contains('active')) {
                 drawer.classList.remove('active');
@@ -950,12 +1002,6 @@
         }
 
         updateUI();
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 80) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-        });
     </script>
 
     <a href="sommelier.html" class="floating-sommelier" title="Consultar al Sommelier">

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Historia | Ancestrales</title>
 
-    <!-- Tipografías unificadas con el Index -->
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,600&display=swap"
         rel="stylesheet">
@@ -27,25 +26,11 @@
             box-sizing: border-box;
         }
 
-        input,
-        button,
-        textarea {
-            -webkit-appearance: none;
-            appearance: none;
-            border-radius: 0;
-        }
-
         /* PROTECCIÓN DE TEXTO PARA iOS */
         html {
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
-        }
-
-        /* PROTECCIÓN DE IMÁGENES GLOBALES */
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -57,19 +42,13 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- REVELADO (Consistente con Index) --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: var(--transition-smooth);
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- NAVEGACIÓN UNIFICADA (Estructura del Index) --- */
+        /* --- NAVEGACIÓN --- */
         nav {
             position: fixed;
             top: 0;
@@ -85,38 +64,25 @@
         }
 
         nav.scrolled {
-            padding: 10px 6%;
+            padding: 12px 6%;
             background: rgba(244, 241, 234, 0.98);
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
         }
 
-        .logo-container {
-            margin-bottom: 20px;
-            transition: var(--transition-smooth);
-        }
-
         .nav-logo {
             width: 320px;
-            /* Igual al index para evitar saltos */
-            height: auto;
             transition: var(--transition-smooth);
-            display: block;
         }
 
         nav.scrolled .nav-logo {
             width: 180px;
         }
 
-        nav.scrolled .logo-container {
-            margin-bottom: 5px;
-        }
-
         .nav-menu-wrapper {
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
         }
 
         nav ul {
@@ -131,23 +97,42 @@
             font-size: 0.8rem;
             letter-spacing: 3px;
             text-transform: uppercase;
-            font-weight: 400;
-            transition: 0.3s;
+            transition: color 0.3s ease;
         }
 
         nav a:hover {
             color: var(--gold-leaf);
         }
 
-        /* --- HERO HISTORIA --- */
+        /* BOTÓN HAMBURGUESA (Oculto en Desktop) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 26px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 2px;
+            background-color: var(--obsidian);
+            transition: var(--transition-smooth);
+            transform-origin: left center;
+        }
+
+        /* --- HERO --- */
         .hero {
-            height: 70dvh;
+            min-height: 60dvh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             text-align: center;
-            padding-top: 140px;
+            padding: 140px 5% 40px;
             background-image: linear-gradient(rgba(15, 13, 12, 0.7), var(--obsidian)), url('historia.jpg');
             background-size: cover;
             background-position: center;
@@ -156,33 +141,25 @@
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700;
-            letter-spacing: 12px;
+            letter-spacing: clamp(4px, 1vw, 12px);
             background: linear-gradient(to bottom, #fff 40%, var(--gold-leaf));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
         }
 
-        /* --- SECCIONES --- */
+        /* --- CONTENIDO --- */
         .section {
-            padding: 100px 10%;
-            max-width: 1200px;
+            padding: 80px 6%;
+            max-width: 1000px;
             margin: auto;
         }
 
-        h2,
-        h3,
-        h4 {
-            font-family: 'Cinzel', serif;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--gold-leaf);
-        }
-
         h2 {
-            font-size: 2.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             text-align: center;
+            color: var(--gold-leaf);
             margin-bottom: 20px;
         }
 
@@ -195,136 +172,181 @@
 
         .story-text {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
             text-align: center;
-            max-width: 850px;
-            margin: 0 auto 80px;
             line-height: 1.8;
             font-style: italic;
             opacity: 0.9;
+            margin-bottom: 80px;
         }
 
-        /* --- BLOQUES DE HISTORIA --- */
         .timeline {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            margin-bottom: 120px;
+            margin-bottom: 80px;
         }
 
         .block {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(197, 160, 89, 0.1);
-            padding: 60px 45px;
-            transition: var(--transition-smooth);
+            padding: 40px;
+            transition: transform 0.4s ease;
         }
 
         .block:hover {
-            border-color: var(--gold-leaf);
-            background: rgba(197, 160, 89, 0.05);
+            transform: translateY(-5px);
         }
 
-        .block h3 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-        }
-
-        .block p {
-            font-weight: 300;
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-
-        /* --- FUNDADORES --- */
         .founders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 60px;
-            margin-top: 60px;
-        }
-
-        .founder-card {
-            text-align: center;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
         }
 
         .img-container {
-            width: 100%;
             aspect-ratio: 4/5;
             overflow: hidden;
-            margin-bottom: 30px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            position: relative;
+            margin-bottom: 20px;
         }
 
         .img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(1.1);
-            transition: 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: grayscale(100%);
+            transition: 0.6s;
         }
 
         .founder-card:hover img {
-            filter: grayscale(0%) contrast(1);
+            filter: grayscale(0%);
             transform: scale(1.05);
         }
 
-        .founder-card h4 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
         .quote {
-            text-align: center;
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 2.2rem;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            text-align: center;
             color: var(--gold-leaf);
-            max-width: 800px;
-            margin: 120px auto 40px;
-            line-height: 1.4;
-            font-weight: 400;
+            margin: 80px auto;
         }
 
-        /* --- FOOTER UNIFICADO --- */
         footer {
-            padding: 120px 6% 60px;
+            padding: 80px 6%;
             text-align: center;
-            background-color: var(--obsidian);
             border-top: 1px solid rgba(197, 160, 89, 0.1);
         }
 
         .footer-logo {
             width: 180px;
-            margin-bottom: 40px;
+            margin: 0 auto 30px;
             filter: brightness(0) invert(1);
         }
 
-        .footer-info {
-            color: var(--bone);
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
+        /* --- AJUSTES RESPONSIVOS (MÓVIL Y TABLET) --- */
+        @media (max-width: 768px) {
+            
+            /* Ajuste estructural del Nav */
+            nav {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 6% !important;
+            }
 
-        @media (max-width: 968px) {
-            .timeline {
-                grid-template-columns: 1fr;
+            .nav-logo {
+                width: 160px !important;
+                margin-bottom: 0 !important;
+            }
+
+            nav.scrolled .nav-logo {
+                width: 130px !important;
+            }
+
+            /* Activación del botón Hamburguesa */
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* Animación de Hamburguesa a X */
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(2px, -2px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(1px, 1px);
+            }
+
+            /* Menú como cortina elegante full-screen */
+            .nav-menu-wrapper {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--silk);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-20px);
+                transition: var(--transition-smooth);
+            }
+
+            .nav-menu-wrapper.active {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
             }
 
             nav ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 15px;
-                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 35px;
             }
 
+            nav a {
+                font-size: 1.1rem !important;
+                letter-spacing: 4px !important;
+            }
+
+            /* Adaptación del contenido */
             .hero {
-                padding-top: 100px;
+                min-height: 50dvh;
+                padding-top: 120px;
+            }
+
+            .section {
+                padding: 60px 6% !important;
+            }
+
+            .timeline {
+                grid-template-columns: 1fr; /* Apilado elegante */
+                gap: 30px;
+            }
+
+            .block {
+                padding: 30px;
+            }
+
+            /* Ajuste adaptativo del componente de voz */
+            #voice-btn,
+            .voice-interface,
+            [class*="voice"],
+            [id*="voice"] {
+                transform: scale(0.75) !important;
+                bottom: 20px !important;
+                right: 20px !important;
             }
         }
     </style>
@@ -336,7 +358,14 @@
         <div class="logo-container">
             <img src="logo.png" alt="Ancestrales" class="nav-logo">
         </div>
-        <div class="nav-menu-wrapper">
+        
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav-menu-wrapper" id="nav-menu-wrapper">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="bienestar2.html">Bienestar</a></li>
@@ -348,88 +377,94 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-content reveal">
-            <p
-                style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem; letter-spacing: 4px; margin-bottom: 20px; color: var(--gold-leaf);">
-                Legado de Familia</p>
+        <div>
+            <p style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; letter-spacing: 4px; margin-bottom: 10px; color: var(--gold-leaf);">
+                Legado de Familia
+            </p>
             <h1>NUESTRA ESENCIA</h1>
         </div>
     </section>
 
     <section class="section">
-        <div class="reveal">
-            <h2>El Comienzo</h2>
-            <div class="gold-line"></div>
-            <p class="story-text">
-                "Todo comenzó con una idea sencilla pero poderosa: crear algo propio que llevara nuestra esencia y
-                conectara con las raíces de nuestra tierra."
-            </p>
-        </div>
+        <h2>El Comienzo</h2>
+        <div class="gold-line"></div>
+        <p class="story-text">
+            "Todo comenzó con una idea sencilla pero poderosa: crear algo propio que llevara nuestra esencia y
+            conectara con las raíces de nuestra tierra."
+        </p>
 
         <div class="timeline">
-            <div class="block reveal">
+            <div class="block">
                 <h3>El Sueño</h3>
                 <p>La idea nació en una conversación simple entre hermanos. Ambos compartíamos el deseo de crear una
                     marca auténtica que representara nuestros valores: naturaleza, bienestar y tradición.</p>
             </div>
-            <div class="block reveal">
+            <div class="block">
                 <h3>El Descubrimiento</h3>
                 <p>Investigando el cacao entendimos su carácter sagrado, medicinal y energético. Decidimos honrar esa
                     tradición y llevarla a las personas de una manera moderna y consciente.</p>
             </div>
         </div>
 
-        <div style="margin-top: 120px;">
-            <div class="reveal">
-                <h2>Los Fundadores</h2>
-                <div class="gold-line"></div>
+        <h2>Los Fundadores</h2>
+        <div class="gold-line"></div>
+
+        <div class="founders-grid">
+            <div class="founder-card">
+                <div class="img-container">
+                    <img src="hermano.jpeg" alt="Fundador">
+                </div>
+                <h4>El Visionario</h4>
+                <p style="font-size: 0.85rem; opacity: 0.6;">Pasión por el origen y el futuro del cacao.</p>
             </div>
 
-            <div class="founders-grid">
-                <div class="founder-card reveal">
-                    <div class="img-container">
-                        <img src="hermano.jpeg" alt="Fundador">
-                    </div>
-                    <h4>El Visionario</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.6; letter-spacing: 1px;">Pasión por el origen y el futuro
-                        del cacao.</p>
+            <div class="founder-card">
+                <div class="img-container">
+                    <img src="hermana.jpeg" alt="Fundadora">
                 </div>
-
-                <div class="founder-card reveal">
-                    <div class="img-container">
-                        <img src="hermana.jpeg" alt="Fundadora">
-                    </div>
-                    <h4>La Creativa</h4>
-                    <p style="font-size: 0.85rem; opacity: 0.6; letter-spacing: 1px;">Alma artística detrás de cada
-                        detalle sagrado.</p>
-                </div>
+                <h4>La Creativa</h4>
+                <p style="font-size: 0.85rem; opacity: 0.6;">Alma artística detrás de cada detalle sagrado.</p>
             </div>
         </div>
 
-        <p class="quote reveal">
+        <p class="quote">
             "El cacao no es solo un alimento. Es un puente entre nuestras raíces, nuestra familia y el bienestar."
         </p>
     </section>
 
     <footer>
         <img src="logo.png" class="footer-logo" alt="Ancestrales">
-        <p class="footer-info">© 2026 ANCESTRALES | ALTO CACAO DE ORIGEN</p>
-        <p class="footer-info" style="margin-top: 15px; font-size: 0.65rem;">BOGOTÁ • COLOMBIA</p>
+        <p style="color: var(--bone); font-size: 0.7rem; letter-spacing: 3px; opacity: 0.7;">© 2026 ANCESTRALES | BOGOTÁ • COLOMBIA</p>
     </footer>
 
     <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
+        // Efecto Scroll en la barra de navegación
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
-            if (window.scrollY > 80) nav.classList.add('scrolled');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
+        });
+
+        // Lógica del Menú Hamburguesa
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu-wrapper');
+        const navLinks = document.querySelectorAll('.nav-menu-wrapper a');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // Bloquear el scroll del body cuando el menú esté abierto
+            document.body.style.overflowY = navMenu.classList.contains('active') ? 'hidden' : 'auto';
+        });
+
+        // Cerrar el menú al hacer click en cualquier enlace
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflowY = 'auto';
+            });
         });
     </script>
     <script src="voice.js"></script>
