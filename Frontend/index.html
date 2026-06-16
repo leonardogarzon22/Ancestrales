@@ -20,6 +20,7 @@
             --transition-smooth: all var(--anim-speed) cubic-bezier(0.23, 1, 0.32, 1);
         }
 
+        /* --- RESETEO Y PROTECCIONES GLOBALES --- */
         * {
             margin: 0;
             padding: 0;
@@ -34,13 +35,13 @@
             border-radius: 0;
         }
 
-        /* PROTECCIÓN DE TEXTO PARA iOS */
         html {
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* PROTECCIÓN DE IMÁGENES GLOBALES */
         img {
             max-width: 100%;
             height: auto;
@@ -84,7 +85,7 @@
         }
 
         nav.scrolled {
-            padding: 10px 6%;
+            padding: 12px 6%;
             background: rgba(244, 241, 234, 0.98);
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
@@ -146,33 +147,43 @@
             cursor: pointer;
             color: var(--obsidian);
             font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        /* --- SECCIÓN HERO CON IMAGEN DE CACAO PURO --- */
+        .nav-reserva:hover {
+            color: var(--gold-leaf);
+        }
+
+        /* --- SECCIÓN HERO --- */
         .hero {
-            height: 100dvh;
+            min-height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             text-align: center;
-            padding-top: 140px;
+            padding: 160px 5% 40px;
 
-            /* Usamos una imagen de cacao crudo y saludable con un overlay oscuro */
             background-color: var(--obsidian);
-            background-image: linear-gradient(rgba(15, 13, 12, 0.6), rgba(15, 13, 12, 0.6)),
+            background-image: linear-gradient(rgba(15, 13, 12, 0.65), rgba(15, 13, 12, 0.65)),
                 url('./opcion6.png');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            width: 100%;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 10vw, 6.5rem);
+            font-size: clamp(2.2rem, 7.5vw, 6rem);
             font-weight: 700;
-            letter-spacing: 15px;
-            line-height: 1.1;
+            letter-spacing: clamp(4px, 1.5vw, 15px);
+            line-height: 1.15;
             margin-bottom: 25px;
             background: linear-gradient(to bottom, #fff 40%, var(--gold-leaf));
             -webkit-background-clip: text;
@@ -183,14 +194,14 @@
 
         /* --- BOTONES --- */
         .btn-luxury {
-            padding: 22px 60px;
+            padding: 20px 50px;
             background: var(--gold-leaf);
             border: 1px solid var(--gold-leaf);
             color: var(--obsidian);
             font-family: 'Cinzel', serif;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.9rem;
+            letter-spacing: 3px;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
@@ -199,9 +210,8 @@
 
         .btn-luxury:hover {
             background: #e0b86f;
-            /* dorado más claro */
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.3);
+            box-shadow: 0 10px 25px rgba(197, 160, 89, 0.25);
         }
 
         .btn-luxury::before {
@@ -222,22 +232,23 @@
 
         /* --- PRODUCTOS --- */
         .section-title {
-            padding: 120px 6% 80px;
+            padding: 120px 6% 60px;
             text-align: center;
         }
 
         .section-title h2 {
             font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
-            letter-spacing: 10px;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            letter-spacing: clamp(4px, 1vw, 10px);
             color: var(--gold-leaf);
+            margin-bottom: 10px;
         }
 
         .grid-premium {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 40px;
-            padding: 0 6% 150px;
+            padding: 0 6% 120px;
             max-width: 1600px;
             margin: 0 auto;
         }
@@ -247,28 +258,39 @@
             text-align: center;
             transition: var(--transition-smooth);
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 
+        /* Destacado de Primer Producto */
         .product-card:first-child {
             grid-column: span 12;
             display: flex;
+            flex-direction: row;
             align-items: center;
             text-align: left;
             gap: 60px;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         .product-card:first-child img {
             width: 50%;
             max-height: 500px;
             object-fit: cover;
+            margin-bottom: 0;
+        }
+
+        .product-card:first-child .product-info {
+            width: 50%;
         }
 
         .product-card img {
             width: 100%;
             height: auto;
             margin-bottom: 35px;
-            transition: 1.2s;
+            transition: 1.2s cubic-bezier(0.23, 1, 0.32, 1);
             filter: sepia(0.2) contrast(1.1);
         }
 
@@ -278,28 +300,29 @@
         }
 
         .product-name {
-            font-family: 'Cinzel';
-            font-size: 1.4rem;
-            letter-spacing: 4px;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            letter-spacing: 3px;
             margin-bottom: 10px;
+            color: var(--bone);
         }
 
         .price-tag {
             display: block;
             color: var(--gold-leaf);
             font-size: 1.1rem;
-            margin: 10px 0 30px;
+            margin: 10px 0 25px;
             letter-spacing: 2px;
         }
 
-        /* --- CARRITO Y FOOTER --- */
+        /* --- CARRITO --- */
         .cart-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             background: var(--silk);
-            padding: 25px 8%;
+            padding: 20px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -307,22 +330,27 @@
             transform: translateY(100%);
             transition: var(--transition-smooth);
             z-index: 2000;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .cart-bar.active {
             transform: translateY(0);
         }
 
+        /* --- FOOTER --- */
         footer {
-            padding: 120px 6% 60px;
+            padding: 100px 6% 60px;
             text-align: center;
             background-color: var(--obsidian);
+            border-top: 1px solid rgba(244, 241, 234, 0.05);
         }
 
         .footer-logo {
             width: 180px;
             margin-bottom: 40px;
             filter: brightness(0) invert(1);
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .footer-info {
@@ -330,33 +358,156 @@
             font-size: 0.75rem;
             letter-spacing: 4px;
             text-transform: uppercase;
-            opacity: 0.8;
+            opacity: 0.7;
+        }
+
+        /* --- OPTIMIZACIÓN RESPONSIVA (MEDIA QUERIES) --- */
+        @media (max-width: 1100px) {
+            .product-card {
+                grid-column: span 6;
+            }
+
+            .product-card:first-child {
+                grid-column: span 12;
+                gap: 40px;
+            }
         }
 
         @media (max-width: 968px) {
+            nav {
+                padding: 20px 5% 15px;
+            }
+
+            .nav-logo {
+                width: 240px;
+            }
+
+            nav.scrolled .nav-logo {
+                width: 160px;
+            }
+
+            nav ul {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.75rem;
+                letter-spacing: 2px;
+            }
+
+            .nav-reserva {
+                position: relative;
+                right: auto;
+                margin-left: 20px;
+                font-weight: 600;
+            }
+
+            .hero {
+                padding-top: 180px;
+            }
+
+            .grid-premium {
+                gap: 30px;
+                padding-bottom: 100px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu-wrapper {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-reserva {
+                margin-left: 0;
+                margin-top: 5px;
+                background: rgba(197, 160, 89, 0.1);
+                padding: 4px 15px;
+                border-radius: 20px;
+                color: var(--gold-leaf);
+            }
 
             .product-card,
             .product-card:first-child {
                 grid-column: span 12;
                 flex-direction: column;
                 text-align: center;
+                padding: 10px 0;
+            }
+
+            .product-card:first-child img,
+            .product-card:first-child .product-info {
+                width: 100%;
             }
 
             .product-card:first-child img {
-                width: 100%;
+                margin-bottom: 30px;
             }
 
+            .section-title {
+                padding: 80px 6% 40px;
+            }
+
+            section[style*="padding: 120px 6%"] {
+                padding: 80px 6% !important;
+            }
+
+            section h2[style*="font-size: 2.5rem"] {
+                font-size: 1.8rem !important;
+                letter-spacing: 4px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
             nav ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 15px;
-                width: 100%;
+                gap: 12px 18px;
             }
 
-            .hero {
-                padding-top: 100px;
+            nav a {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+            }
+
+            .btn-luxury {
+                padding: 18px 35px;
+                width: 100%;
+                font-size: 0.8rem;
+            }
+
+            .cart-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 15px 5%;
+            }
+
+            .cart-bar .btn-luxury {
+                padding: 14px;
+            }
+        }
+
+        #voice-btn,
+        .voice-interface,
+        [class*="voice"],
+        [id*="voice"] {
+            transition: var(--transition-smooth);
+        }
+
+        @media (max-width: 768px) {
+
+            /* Reduce el tamaño del contenedor o botón un 30% en móviles */
+            #voice-btn,
+            .voice-interface,
+            [class*="voice"],
+            [id*="voice"] {
+                transform: scale(0.75) !important;
+                transform-origin: bottom right;
+                /* Alinea el encogimiento hacia la esquina inferior derecha */
+                bottom: 20px !important;
+                /* Lo separa un poco del borde para que sea fácil de presionar */
+                right: 20px !important;
             }
         }
     </style>
@@ -385,8 +536,9 @@
     <section class="hero">
         <div class="hero-content reveal">
             <p
-                style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; letter-spacing: 5px; margin-bottom: 45px; color: var(--bone);">
-                Nutrición sagrada recuperada de las raíces</p>
+                style="font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.1rem, 3.8vw, 1.8rem); letter-spacing: clamp(2px, 0.5vw, 5px); margin-bottom: clamp(25px, 5vh, 45px); color: var(--bone); max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.4;">
+                Nutrición sagrada recuperada de las raíces
+            </p>
             <h1>ANCESTRALES</h1>
             <button class="btn-luxury"
                 onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
@@ -397,8 +549,10 @@
 
     <div class="section-title reveal" id="productos">
         <h2>Selección Premium</h2>
-        <p style="font-family: 'Playfair Display'; font-style: italic; opacity: 0.6; font-size: 1.2rem;">Ediciones
-            limitadas numeradas de origen único</p>
+        <p
+            style="font-family: 'Playfair Display', serif; font-style: italic; opacity: 0.6; font-size: clamp(1rem, 2vw, 1.2rem);">
+            Ediciones limitadas numeradas de origen único
+        </p>
     </div>
 
     <section class="grid-premium">
@@ -406,27 +560,36 @@
             <img src="cacao1.jpeg" alt="Obsidian">
             <div class="product-info">
                 <h3 class="product-name">Obsidian 100% Pureza</h3>
-                <p style="margin-bottom: 20px; font-weight: 300; opacity: 0.8;">Cacao criollo de alta montaña, notas a
-                    frutos rojos y tierra húmeda.</p>
+                <p style="margin-bottom: 20px; font-weight: 300; opacity: 0.8; font-size: 0.95rem;">
+                    Cacao criollo de alta montaña, notas a frutos rojos y tierra húmeda.
+                </p>
                 <span class="price-tag">$12.000 COP</span>
                 <button class="btn-luxury" onclick="addToCart('Obsidian 100%', 12000)">Añadir Reserva</button>
             </div>
         </div>
 
         <div class="product-card reveal">
-            <img src="cacao2.jpeg" alt="Oro">
-            <h3 class="product-name">Oro Especiado</h3>
-            <span class="price-tag">$14.500 COP</span>
-            <button class="btn-luxury" style="padding: 15px 35px; font-size: 0.75rem;"
-                onclick="addToCart('Oro Especiado', 14500)">Añadir Reserva</button>
+            <div>
+                <img src="cacao2.jpeg" alt="Oro">
+                <h3 class="product-name">Oro Especiado</h3>
+            </div>
+            <div>
+                <span class="price-tag">$14.500 COP</span>
+                <button class="btn-luxury" style="padding: 15px 35px; font-size: 0.75rem; width: 100%;"
+                    onclick="addToCart('Oro Especiado', 14500)">Añadir Reserva</button>
+            </div>
         </div>
 
         <div class="product-card reveal">
-            <img src="cacao3.jpeg" alt="Elixir">
-            <h3 class="product-name">Elixir Ancestral</h3>
-            <span class="price-tag">$9.500 COP</span>
-            <button class="btn-luxury" style="padding: 15px 35px; font-size: 0.75rem;"
-                onclick="addToCart('Elixir Ancestral', 9500)">Añadir Reserva</button>
+            <div>
+                <img src="cacao3.jpeg" alt="Elixir">
+                <h3 class="product-name">Elixir Ancestral</h3>
+            </div>
+            <div>
+                <span class="price-tag">$9.500 COP</span>
+                <button class="btn-luxury" style="padding: 15px 35px; font-size: 0.75rem; width: 100%;"
+                    onclick="addToCart('Elixir Ancestral', 9500)">Añadir Reserva</button>
+            </div>
         </div>
     </section>
 
@@ -434,7 +597,7 @@
         <div>
             <p style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.6; text-transform: uppercase;">Su Selección de
                 Origen</p>
-            <h4 id="totalDisplay" style="font-family: 'Cinzel'; font-size: 1.5rem;">$0.00</h4>
+            <h4 id="totalDisplay" style="font-family: 'Cinzel', serif; font-size: 1.5rem;">$0.00</h4>
         </div>
         <button class="btn-luxury" style="background: var(--obsidian); color: var(--gold-leaf); border: none;"
             onclick="checkout()">
@@ -442,25 +605,20 @@
         </button>
     </div>
 
-    <!-- --- SECCIÓN SOMMELIER --- -->
     <section class="reveal" style="padding: 120px 6%; text-align: center; background: var(--obsidian);">
-
         <h2
             style="font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--gold-leaf); margin-bottom: 25px;">
             ¿No sabes qué cacao escoger?
         </h2>
-
         <p
             style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;">
             Habla con nuestro sommelier y descubre tu perfil ideal
         </p>
-
-        <a href="sommelier.html">
+        <a href="sommelier.html" style="text-decoration: none;">
             <button class="btn-luxury">
                 Consultar Sommelier
             </button>
         </a>
-
     </section>
 
     <footer>
